@@ -74,6 +74,7 @@ export default function JokeBrowse() {
 const styles = StyleSheet.create({
     list: {
         marginTop: 100,
+        paddingBottom: 120,
     },
     errorText: {
         color: 'red',

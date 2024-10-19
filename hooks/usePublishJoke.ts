@@ -5,14 +5,14 @@ export function usePublishJoke() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const publishJoke = async (text: string, author: string) => {
+    const publishJoke = async (title: string, text: string, author: string) => {
         setLoading(true);
         setError(null);
 
         try {
             const { data, error } = await supabase
                 .from('jokes')
-                .insert([{ text, author }]);  // Insert author
+                .insert([{ title, text, author }]);
 
             if (error) throw error;
 

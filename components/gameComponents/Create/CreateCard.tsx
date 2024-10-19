@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import ContentBox from '../../ui/generalUI/ContentBox';
-import { TextArea, useTheme, View, Text } from 'tamagui';
+import { Input, TextArea, useTheme, View, Text } from 'tamagui';
 import Button from '@/components/ui/buttons/Button';
 import { usePublishJoke } from '@/hooks/usePublishJoke';
 import { supabase } from '@/supabase';
 
 export default function CreateCard() {
     const theme = useTheme();
+    const [jokeTitle, setJokeTitle] = useState<string>('');
     const [jokeText, setJokeText] = useState<string>('');
     const { publishJoke, loading, error } = usePublishJoke();
 
@@ -23,7 +24,7 @@ export default function CreateCard() {
         const uid = data?.user?.id;  // Extract the user's UID from the response
 
         if (jokeText.trim() && uid) {
-            const result = await publishJoke(jokeText, uid);  // Pass the UID as author
+            const result = await publishJoke(jokeTitle, jokeText, uid);  // Pass the UID as author
             if (result) {
                 setJokeText(''); // Clear the textarea on success
             }
@@ -52,6 +53,14 @@ export default function CreateCard() {
                 />
             </View>
             <ContentBox title="Write your own joke">
+                <Input
+                    value={jokeTitle}
+                    onChangeText={setJokeTitle}
+                    placeholder="The title of your joke..."
+                    backgroundColor={"white"}
+                    borderWidth={0}
+                    padding={10}
+                />
                 <TextArea
                     value={jokeText}
                     onChangeText={setJokeText}

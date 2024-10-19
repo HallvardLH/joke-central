@@ -7,14 +7,16 @@ export default function useAuth() {
 	const [session, setSession] = useState<Session | null>(null);
 
 	useEffect(() => {
+		// Fetch session initially
 		supabase.auth.getSession().then(({ data: { session } }) => {
 			setSession(session);
 		});
 
+		// Subscribe to auth state changes
 		const { data: authListener } = supabase.auth.onAuthStateChange(
 			(_event, session) => {
 				setSession(session);
-			},
+			}
 		);
 
 		return () => {
@@ -22,25 +24,28 @@ export default function useAuth() {
 		};
 	}, []);
 
+	// Helper function to get avatar URL
 	function getAvatarUrl(avatar: number | string) {
 		return `https://oprhztiruewgtiajcdmo.supabase.co/storage/v1/object/public/avatars/${avatar}.png`;
 	}
 
+	// Get the current session, or fetch it if not set
 	async function getSession() {
 		if (session) return session;
 
 		try {
-			const { data: session, error } = await supabase.auth.getSession();
+			const { data: { session }, error } = await supabase.auth.getSession();
 			if (error) throw error;
-			setSession(session.session);
-			return session.session;
+			setSession(session);
+			return session;
 		} catch (error) {
 			if (error instanceof Error) {
-				console.error('Error fetching session', error.message);
+				console.error('Error fetching session:', error.message);
 			}
 		}
 	}
 
+	// Sign in with email and password
 	const signIn = async (email: string, password: string) => {
 		email = email.toLowerCase();
 		const { error } = await supabase.auth.signInWithPassword({
@@ -51,6 +56,7 @@ export default function useAuth() {
 		if (error) Alert.alert(error.message);
 	};
 
+	// Sign up a new user
 	const signUp = async (
 		email: string,
 		username: string,
@@ -58,14 +64,10 @@ export default function useAuth() {
 		avatar: number,
 	) => {
 		email = email.toLowerCase();
-		console.log(username);
 
 		if (!avatar) avatar = 0;
 
-		const {
-			data: { user, session },
-			error,
-		} = await supabase.auth.signUp({
+		const { data: { user, session }, error } = await supabase.auth.signUp({
 			email,
 			password,
 			options: {
@@ -83,10 +85,11 @@ export default function useAuth() {
 		}
 
 		if (user) {
-			addToProfiles(email, username, avatar, user.id);
+			await addToProfiles(email, username, avatar, user.id);
 		}
 	};
 
+	// Insert user data into profiles table
 	const addToProfiles = async (
 		email: string | null,
 		username: string | null,
@@ -112,6 +115,7 @@ export default function useAuth() {
 		}
 	};
 
+	// Convert an anonymous user to a permanent user
 	const anonToPermanentUser = async (
 		email: string,
 		username: string,
@@ -119,6 +123,8 @@ export default function useAuth() {
 		avatar: number,
 	) => {
 		email = email.toLowerCase();
+
+		// Update user email, username, and avatar
 		const { data, error } = await supabase.auth.updateUser({
 			email,
 			data: {
@@ -128,11 +134,12 @@ export default function useAuth() {
 			},
 		});
 
-		await supabase.auth.updateUser({
-			password,
-		});
+		// Update password separately
+		await supabase.auth.updateUser({ password });
+
 		if (session) {
-			await supabase
+			// Update the profile in the profiles table
+			const { error: profileError } = await supabase
 				.from('profiles')
 				.update({
 					username,
@@ -140,12 +147,18 @@ export default function useAuth() {
 					avatar_url: getAvatarUrl(avatar),
 				})
 				.eq('id', session.user.id);
+
+			if (profileError) {
+				console.error("Error updating profile:", profileError);
+				Alert.alert("Error updating profile");
+			}
 		}
 
 		if (error) Alert.alert(error.message);
 		if (!session) Alert.alert('Please check your inbox for email verification!');
 	};
 
+	// Sign in anonymously
 	const signInAnonymously = async () => {
 		const { data: { user }, error } = await supabase.auth.signInAnonymously();
 
@@ -155,16 +168,17 @@ export default function useAuth() {
 		}
 
 		if (user) {
-			// const defaultUsername = `guest_${user.id.substring(0, 8)}`;
+			// Add an anonymous profile to the profiles table
 			await addToProfiles(
 				null,
-				null,
-				"default",
+				null, // No username for anonymous users initially
+				"default", // Default avatar
 				user.id
 			);
 		}
 	};
 
+	// Sign out the current user
 	const signOut = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) Alert.alert(error.message);

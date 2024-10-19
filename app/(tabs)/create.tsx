@@ -1,4 +1,4 @@
-import CreateCard from "@/components/gameComponents/Create/CreateCard";
+import CreateCard from "@/components/gameComponents/create/CreateCard";
 import { View } from "tamagui";
 import { useTheme } from "tamagui";
 import GradientBackground from "@/components/ui/layout/GradientBackground";
