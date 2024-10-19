@@ -1,6 +1,6 @@
-import Official from '../home/Official';
-import ContentTab from '@/components/layout/ContentTab';
-import ScreenView from '@/components/layout/ScreenView';
+import OfficialFeed from '../home/OfficialFeed';
+import ContentTab from '@/components/ui/layout/ContentTab';
+import ScreenView from '@/components/ui/layout/ScreenView';
 import { View } from 'tamagui';
 
 export default function Home() {
@@ -12,11 +12,11 @@ export default function Home() {
                 tabs={[
                     {
                         name: "Official",
-                        component: <Official />
+                        component: <OfficialFeed />
                     },
                     {
                         name: "Community",
-                        component: <Official />,
+                        component: <OfficialFeed />,
                     }
                 ]}
             />

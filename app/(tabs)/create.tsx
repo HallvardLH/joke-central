@@ -1,10 +1,14 @@
-import ScreenView from "@/components/layout/ScreenView";
-import ContentBox from "@/components/generalUI/ContentBox";
+import CreateCard from "@/components/gameComponents/Create/CreateCard";
+import { View } from "tamagui";
+import { useTheme } from "tamagui";
+import GradientBackground from "@/components/ui/layout/GradientBackground";
 
 export default function Create() {
+    const theme = useTheme();
     return (
-        <ScreenView>
-            <ContentBox />
-        </ScreenView>
+        <View style={{ flex: 1, backgroundColor: "red", paddingTop: 50, }}>
+            <GradientBackground />
+            <CreateCard />
+        </View>
     )
 }

@@ -23,7 +23,7 @@ export default function useAuth() {
 	}, []);
 
 	function getAvatarUrl(avatar: number | string) {
-		return `https//oprhztiruewgtiajcdmo.supabase.co/storage/v1/object/public/avatars/${avatar}.png`;
+		return `https://oprhztiruewgtiajcdmo.supabase.co/storage/v1/object/public/avatars/${avatar}.png`;
 	}
 
 	async function getSession() {
