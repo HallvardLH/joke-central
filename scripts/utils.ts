@@ -10,3 +10,16 @@ export function getPercentage(number1: number, number2: number) {
     }
     return (number1 / number2) * 100;
 }
+
+export function formatNumber(num: number | string) {
+    if (typeof num === "string") {
+        return num
+    }
+    if (num >= 1e6) {
+        return (num / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';  // Million
+    }
+    if (num >= 1e3) {
+        return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'k';  // Thousand
+    }
+    return num.toString();  // Less than 1000 stays the same
+}

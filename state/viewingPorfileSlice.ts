@@ -26,6 +26,6 @@ export const viewingProfileSlice = createSlice({
     },
 });
 
-export const { resetViewingProfileSlice } = viewingProfileSlice.actions;
+export const { updateViewingProfileUid, resetViewingProfileSlice } = viewingProfileSlice.actions;
 
 export default viewingProfileSlice.reducer;

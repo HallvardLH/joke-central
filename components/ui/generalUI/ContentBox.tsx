@@ -8,6 +8,7 @@ import { componentColors } from "../misc/Colors";
 import Text from "./Text";
 import Shadow from "../misc/Shadow";
 import RibbonTitle from "./RibbonTitle";
+import { useTheme } from "tamagui";
 
 interface ContentBoxProps {
     children?: ReactNode;
@@ -28,6 +29,7 @@ interface ContentBoxProps {
         stars?: boolean;
     }
     width?: DimensionValue;
+    heightOverride?: number;
 }
 
 export default function ContentBox(props: ContentBoxProps) {
@@ -43,7 +45,10 @@ export default function ContentBox(props: ContentBoxProps) {
         isLoading = false,
         ribbonTitle,
         width = "88%",
+        heightOverride,
     } = props;
+
+    const theme = useTheme();
 
     const [containerHeight, setContainerHeight] = useState(200); // Default minHeight
 
@@ -52,6 +57,9 @@ export default function ContentBox(props: ContentBoxProps) {
     const onLayout = (event: any) => {
         const { height } = event.nativeEvent.layout;
         let newHeight = 200;
+        if (heightOverride) {
+            newHeight = heightOverride;
+        }
         if (height > 450) {
             newHeight = 450;
         } else {
@@ -66,9 +74,10 @@ export default function ContentBox(props: ContentBoxProps) {
             <View style={[
                 styles.background,
                 { height: containerHeight + 4 },
-                { width: width }
+                { width: width },
+                { backgroundColor: theme.backgroundHighlight.val }
             ]} />
-            <View style={[styles.contentBoxContainer, style, { width: width }]} onLayout={onLayout}>
+            <View style={[styles.contentBoxContainer, style, { width: width, backgroundColor: theme.background.val, maxHeight: heightOverride ? heightOverride : 450, }]} onLayout={onLayout}>
                 {beforeHeader}
                 <>
                     {ribbonTitle && (
@@ -124,16 +133,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 14,
         borderRadius: 20,
-        backgroundColor: componentColors.contentBox.background,
         minHeight: 100,
         gap: 10,
-        maxHeight: 450,
         overflow: "hidden",
     },
 
     background: {
         position: "absolute",
-        backgroundColor: componentColors.contentBox.backgroundHighlight,
         borderRadius: 20,
     },
 

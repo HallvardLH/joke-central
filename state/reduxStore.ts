@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { viewingProfileSlice } from './viewingPorfileSlice';
-import { signUpSlice } from './signUpSlice';
+import viewingProfileSlice from './viewingPorfileSlice';
+import signUpSlice from './signUpSlice';
 
 const rootReducer = combineReducers({
     viewingProfile: viewingProfileSlice,

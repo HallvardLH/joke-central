@@ -2,15 +2,12 @@ import { XStack, View, ScrollView } from "tamagui";
 import { TouchableOpacity } from "react-native";
 import { Dispatch, SetStateAction } from "react";
 import Avatar from "@/components/ui/generalUI/Avatar";
+import { AVATAR_IDS } from "@/constants/General";
 
 interface AvatarSelectorCarouselProps {
     setAvatar: Dispatch<SetStateAction<number>>;
     avatar: number;
 }
-
-export const AVATAR_IDS = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-];
 
 export default function AvatarSelectorCarousel(props: AvatarSelectorCarouselProps) {
     const { setAvatar, avatar } = props;

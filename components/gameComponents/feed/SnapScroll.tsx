@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, FlatList, Dimensions, StyleSheet, RefreshControl } from 'react-native';
+import { Dimensions, StyleSheet, RefreshControl } from 'react-native'
+import { FlashList } from '@shopify/flash-list';
 
 const { height } = Dimensions.get('window');
 
@@ -12,7 +13,7 @@ interface SnapScrollProps {
 
 export default function SnapScroll({ data, renderItem, refreshing, onRefresh }: SnapScrollProps) {
     return (
-        <FlatList
+        <FlashList
             data={data}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
@@ -20,16 +21,17 @@ export default function SnapScroll({ data, renderItem, refreshing, onRefresh }: 
             snapToInterval={height} // Snap at multiples of screen height
             decelerationRate="fast" // Make scroll snappy
             snapToAlignment="start" // Snap to the top of the screen
-            style={styles.list}
+            contentContainerStyle={styles.list}
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
+            estimatedItemSize={height}
         />
     );
 }
 
 const styles = StyleSheet.create({
     list: {
-        flex: 1,
+        // flex: 1,
     },
 });

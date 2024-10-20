@@ -1,69 +1,50 @@
-import ProfilePicture from "../Card/ProfilePicture";
-import { View, ScrollView, Button, } from "tamagui";
-import useSocial from "../../hooks/useSocial";
-import { useState, useEffect } from "react";
-import useAuth from "../../hooks/useAuth";
-import Toast from 'react-native-toast-message';
-import { Pressable } from "react-native";
-import { AVATAR_IDS } from "../../../settings";
-import { useNavigation, ParamListBase } from "@react-navigation/native";
+import Avatar from "@/components/ui/generalUI/Avatar";
+import { View, ScrollView } from "tamagui";
+import { TouchableOpacity, Dimensions } from "react-native";
+import { AVATAR_IDS } from "@/constants/General";
+import { Dispatch, SetStateAction } from "react";
+import Button from "@/components/ui/buttons/Button";
 
-export default function AvatarSelector() {
+interface AvatarSelectProps {
+    avatarUrl: string,
+    setAvatarUrl: Dispatch<SetStateAction<string>>;
+    onBack: () => void;
+    onSave: () => void;
+}
 
-    const { getSession } = useAuth();
-    const [selectedAvatar, setSelectedAvatar] = useState()
-    const { changeAvatar } = useSocial();
-    const navigation = useNavigation();
+const { width } = Dimensions.get('window');
 
-    const switchAvatar = async (avatar_url: string) => {
-        navigation.goBack();
-        const result = await changeAvatar(avatar_url);
-        if (!result || result.error) {
-            Toast.show({
-                type: 'error',
-                text1: 'Error',
-                text2: 'Error updating avatar, please try again.'
-            });
-        }
-    }
-
-    useEffect(() => {
-        const getAvatar = async () => {
-            const session = await getSession();
-            setSelectedAvatar(session?.user.user_metadata.avatar_url);
-        }
-
-        getAvatar();
-    }, []);
+export default function AvatarSelector({ avatarUrl, setAvatarUrl, onBack, onSave }: AvatarSelectProps) {
 
     return (
         <View style={{
             justifyContent: "center",
             alignItems: "center",
             gap: 10,
-            flex: 1,
+            paddingBottom: 100,
+            // flex: 1,
         }}>
-            <ProfilePicture
+            <Avatar
                 size={100}
-                avatarURL={selectedAvatar}
+                avatarURL={avatarUrl}
             />
             <ScrollView borderRadius={20} contentContainerStyle={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 10,
-                padding: 10,
+                padding: 20,
                 alignItems: "center",
                 justifyContent: "space-evenly",
                 paddingBottom: 10,
 
             }}>
                 {AVATAR_IDS.map((id) => (
-                    <Pressable key={id} onPress={() => setSelectedAvatar('https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/' + id + '.png')}>
-                        <ProfilePicture
+                    <TouchableOpacity key={id} onPress={() => setAvatarUrl('https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/' + id + '.png')}>
+                        <Avatar
                             size={90}
                             avatarURL={'https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/' + id + '.png'}
                         />
-                    </Pressable>
+                    </TouchableOpacity>
                 ))}
             </ScrollView>
             <View style={{
@@ -73,25 +54,17 @@ export default function AvatarSelector() {
                 gap: 20,
             }}>
                 <Button
-                    width={"40%"}
-                    borderWidth={2}
-                    borderColor={'$main6'}
-                    borderRadius={15}
-                    backgroundColor={'$main1'}
-                    color={'$main8'}
-                    onPress={() => { navigation.goBack(); }}
-                >
-                    Cancel
-                </Button>
+                    label="Back"
+                    width={width * 0.40}
+                    variant="pink"
+                    onPress={onBack}
+                />
                 <Button
-                    width={"40%"}
-                    borderRadius={15}
-                    backgroundColor={'$main7'}
-                    color={'$main12'}
-                    onPress={() => { switchAvatar(selectedAvatar) }}
-                >
-                    Save
-                </Button>
+                    label="Save"
+                    width={width * 0.40}
+                    variant="blue"
+                    onPress={onSave}
+                />
             </View>
         </View>
     )

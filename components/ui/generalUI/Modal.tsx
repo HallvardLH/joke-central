@@ -1,7 +1,7 @@
 import React from 'react';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { Modal as RNModal, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import CircularButton from '../../buttons/CircularButton';
+import CircularButton from '../buttons/CircularButton';
 
 interface ModalProps {
     children?: ReactNode;
