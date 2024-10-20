@@ -51,21 +51,17 @@ const jokeCentralTheme = {
 
 		background: "white",
 		backgroundHighlight: "#D1D8FF",
+		background2: tokens.color.blue4Dark,
+
+		inputBorder: "#bfbfbf",
+		inputBorderFocus: tokens.color.blue4Dark,
 
 		// Purple colors
 		accentPurpleLight: "#C16DFE",
 		accentPurpleMedium: "#A75CF4",
 		accentPurpleDark: "#9F51FE",
 		accentPurpleDarkest: "#7054FE",
-		// accentPurpleLight: tokens.color.purple7Light,
-		// accentPurpleMedium: tokens.color.purple8Light,
-		// accentPurpleDark: tokens.color.purple9Light,
-		// accentPurpleDarkest: tokens.color.purple10Light,
 
-		// Blue colors
-		// accentBlueLight: "#94E7FC",
-		// accentBlueMedium: "#4CDAFE",
-		// accentBlueDark: "#09B9FF",
 		accentBlueLight: tokens.color.blue7Light,
 		accentBlueMedium: tokens.color.blue8Light,
 		accentBlueDark: tokens.color.blue9Light,
@@ -99,6 +95,9 @@ const jokeCentralTheme = {
 
 		text1: tokens.color.gray9Dark,
 		textPlaceholder: tokens.color.gray11Dark,
+
+		enableShadow: 1,
+		isLightMode: 1,
 	},
 
 	dark: {
@@ -106,39 +105,45 @@ const jokeCentralTheme = {
 
 		background: tokens.color.blue1Dark,
 		backgroundHighlight: tokens.color.blue2Dark,
+		background2: "white",
+
+		inputBorder: "white",
+		inputBorderFocus: "white",
 
 		// Purple colors
-		accentPurpleLight: tokens.color.purple8Dark,
-		accentPurpleMedium: tokens.color.purple7Dark,
-		accentPurpleDark: tokens.color.purple6Dark,
-		accentPurpleDarkest: tokens.color.purple6Dark,
+		accentPurpleLight: "#9F51FE",
+		accentPurpleMedium: "#8B47E0",
+		accentPurpleDark: "#763CC2",
+		accentPurpleDarkest: "#5B2E99",
 
-		// Blue colors
-		accentBlueLight: tokens.color.blue8Dark,
-		accentBlueMedium: tokens.color.blue7Dark,
-		accentBlueDark: tokens.color.blue6Dark,
+		// Blue colors (using tokens)
+		accentBlueLight: "#5CB3D1",
+		accentBlueMedium: "#309AB8",
+		accentBlueDark: "#0078A3",
 
 		// Pink colors
-		accentPinkLight: tokens.color.pink8Dark,
-		accentPinkMedium: tokens.color.pink7Dark,
-		accentPinkDark: tokens.color.pink6Dark,
-		accentPinkDarkest: tokens.color.pink5Dark,
+		accentPinkLight: "#E0A8E0",
+		accentPinkMedium: "#D488DC",
+		accentPinkDark: "#B06FB8",
+		accentPinkDarkest: "#8A558F",
 
 		// Yellow colors
-		accentYellowLight: tokens.color.yellow11Dark,
-		accentYellowMedium: tokens.color.yellow10Dark,
-		accentYellowDark: tokens.color.yellow9Dark,
-		accentYellowDarkest: tokens.color.yellow8Dark,
+		accentYellowLight: "#FFB213",
+		accentYellowMedium: "#FFA000",
+		accentYellowDark: "#FF8C00",
+		accentYellowDarkest: "#CC7000",
 
 		// Green colors
-		accentGreenLight: tokens.color.green11Dark,
-		accentGreenMedium: tokens.color.green10Dark,
-		accentGreenDark: tokens.color.green9Dark,
-		accentGreenDarkest: tokens.color.green8Dark,
+		accentGreenLight: "#A0D67D",
+		accentGreenMedium: "#91C673",
+		accentGreenDark: "#78AD5E",
+		accentGreenDarkest: "#60924B",
+
 
 		// Red colors
-		accentRedMedium: "#FF4672",
-		accentRedDark: "#E90038",
+		accentRedMedium: "#E83F60",
+		accentRedDark: "#C8003A",
+
 
 		// Metals
 		accentGold: "#AE824E",
@@ -147,6 +152,9 @@ const jokeCentralTheme = {
 
 		text1: "white",
 		textPlaceholder: tokens.color.gray11Light,
+
+		enableShadow: 0,
+		isLightMode: 0,
 	},
 }
 

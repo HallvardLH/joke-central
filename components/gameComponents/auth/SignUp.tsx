@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { View, Alert, Text } from 'react-native';
+import { View, Alert } from 'react-native';
 import useAuth from '@/hooks/useAuth';
 import SmallInputField from '@/components/ui/generalUI/SmallInputField';
 import ContentBox from '@/components/ui/generalUI/ContentBox';
 import Button from '../../ui/buttons/Button';
-import AvatarSelectorCarousel from '../SelectAvatar/AvatarSelectorCarousel';
 import { useTheme } from 'tamagui';
 import { router } from 'expo-router';
-import { updateEmail, updateUsername, updatePassword } from '@/state/signUpSlice';
 import { useDispatch } from 'react-redux';
 import { validateEmail } from '@/scripts/validation';
 import { Keyboard } from 'react-native';
+import { supabase } from '@/supabase';
 
 export default function SignUp() {
     const [email, setEmail] = useState<string>('');
@@ -19,25 +18,23 @@ export default function SignUp() {
 
     const theme = useTheme();
 
-    const dispatch = useDispatch();
+    const { signUp, } = useAuth();
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
         if (!validateEmail(email)) {
-            Alert.alert("Please enter a valid email.")
-            return
+            Alert.alert("Please enter a valid email.");
+            return;
         }
 
         if (password.length < 6) {
-            Alert.alert("Your password should be at least 6 characters long.")
-            return
+            Alert.alert("Your password should be at least 6 characters long.");
+            return;
         }
-        dispatch(updateEmail(email));
-        dispatch(updatePassword(password));
-        dispatch(updateUsername(username));
-        Keyboard.dismiss();
-        router.replace("/auth/selectAvatar");
 
-    }
+        Keyboard.dismiss();
+        await signUp(email, username, password, 'https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/default.png');
+        router.replace("/auth/selectAvatar");
+    };
 
     return (
         <ContentBox title='Create user' headerColor={theme.accentPurpleDarkest.val}>

@@ -2,7 +2,7 @@ import { View, TouchableOpacity, StyleSheet, Image, Text as RNText } from "react
 import Text from "../generalUI/Text";
 import Shadow from "../misc/Shadow";
 import { componentColors } from "../misc/Colors";
-// import Emoji from "../gameUI/Emoji";
+import { useTheme } from 'tamagui';
 
 interface TabButtonProps {
     label: string;
@@ -25,16 +25,18 @@ const borderRadius = 15;
 
 export default function TabButton(props: TabButtonProps) {
     const { label, labelColor, background, highlight, onPress, icon, notifications } = props;
+
+    const theme = useTheme();
     return (
         <TouchableOpacity onPress={onPress}>
 
             <Shadow width={shadowWidth} height={backgroundHeight} shadowHeight={4} borderRadius={borderRadius} />
-            <View style={styles.container}>
+            <View style={[styles.container, { borderColor: theme.background.val }]}>
                 <View style={[styles.background, { backgroundColor: highlight }]} />
                 <View style={[styles.outerButtonContainer, { backgroundColor: background }]}>
                     <View style={styles.innerButtonContainer}>
                         {icon}
-                        <Text size={14} color={labelColor} style={{ textAlign: "center" }}>{label}</Text>
+                        <Text shadow={false} size={14} color={labelColor} style={{ textAlign: "center" }}>{label}</Text>
                     </View>
                 </View>
             </View>
@@ -53,7 +55,6 @@ export default function TabButton(props: TabButtonProps) {
 const styles = StyleSheet.create({
     container: {
         borderWidth: borderWidth,
-        borderColor: componentColors.tabBar.border,
         overflow: "hidden",
         height: backgroundHeight,
         borderRadius: borderRadius

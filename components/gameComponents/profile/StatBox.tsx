@@ -13,8 +13,8 @@ export default function StatBox(props: StatBoxProps) {
     const theme = useTheme();
     return (
         <View style={styles.container}>
-            <Text size={22}>{amount}</Text>
-            <Text size={16}>{label}</Text>
+            <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={22}>{amount}</Text>
+            <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={16}>{label}</Text>
         </View>
     )
 }

@@ -6,7 +6,7 @@ import GradientBackground from "@/components/ui/layout/GradientBackground";
 export default function Create() {
     const theme = useTheme();
     return (
-        <View style={{ flex: 1, paddingTop: 50, }}>
+        <View style={{ flex: 1, paddingTop: 50 }}>
             <GradientBackground />
             <CreateCard />
         </View>

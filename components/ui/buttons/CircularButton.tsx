@@ -1,53 +1,16 @@
 import { ReactNode } from "react";
 import { TouchableOpacity, View, StyleSheet, Image } from "react-native";
-import { componentColors } from "../ui/misc/Colors";
-import { percentageOf as p } from "../../scripts/utils";
+import { componentColors } from "../misc/Colors";
+import { percentageOf as p } from "@/scripts/utils";
+import { useTheme } from "tamagui";
 
 interface CircularButtonProps {
     onPress?: () => void;
-    variant?: "yes" | "no" | "close" | "back" | "hamburger" | "minimize";
+    variant?: "green" | "purple" | "yellow" | "blue" | "pink" | "inactive";
     iconComponent?: ReactNode;
     backgroundColor?: string;
     highlightColor?: string;
     size?: number;
-}
-
-const variants = {
-    yes: {
-        icon: require("../../assets/icons/yes.png"),
-        backgroundColor: componentColors.yesButton.background,
-        highlightColor: componentColors.yesButton.highlight,
-    },
-
-    no: {
-        icon: require("../../assets/icons/no.png"),
-        backgroundColor: componentColors.noButton.background,
-        highlightColor: componentColors.noButton.highlight,
-    },
-
-    close: {
-        icon: require("../../assets/icons/close.png"),
-        backgroundColor: "transparent",
-        highlightColor: "transparent",
-    },
-
-    back: {
-        icon: require("../../assets/icons/back.png"),
-        backgroundColor: componentColors.backButton.background,
-        highlightColor: componentColors.backButton.highlight,
-    },
-
-    hamburger: {
-        icon: require("../../assets/icons/hamburger.png"),
-        backgroundColor: componentColors.backButton.background,
-        highlightColor: componentColors.backButton.highlight,
-    },
-
-    minimize: {
-        icon: require("../../assets/icons/minimize.png"),
-        backgroundColor: componentColors.superlikeButton.background,
-        highlightColor: componentColors.superlikeButton.highlight,
-    },
 }
 
 export default function CircularButton(props: CircularButtonProps) {
@@ -55,6 +18,36 @@ export default function CircularButton(props: CircularButtonProps) {
 
     const borderWidth = p(7.5, size);
     const backgroundOffset = p(7, size);
+
+    const theme = useTheme();
+
+    const variants = {
+        "green": {
+            backgroundColor: theme.accentGreenDark.val,
+            highlightColor: theme.accentGreenDarkest.val,
+        },
+        "purple": {
+            backgroundColor: theme.accentPurpleMedium.val,
+            highlightColor: theme.accentPurpleDarkest.val,
+        },
+        "yellow": {
+            backgroundColor: theme.accentYellowDark.val,
+            highlightColor: theme.accentYellowDarkest.val,
+        },
+        "blue": {
+            backgroundColor: theme.accentBlueMedium.val,
+            highlightColor: theme.accentBlueDark.val,
+        },
+        "pink": {
+            backgroundColor: theme.accentPinkMedium.val,
+            highlightColor: theme.accentPinkDark.val,
+        },
+
+        "inactive": {
+            backgroundColor: "silver",
+            highlightColor: "darkgray",
+        }
+    }
 
     return (
         <TouchableOpacity onPress={onPress}>
@@ -78,9 +71,10 @@ export default function CircularButton(props: CircularButtonProps) {
                         width: size,
                         height: size,
                         borderWidth: borderWidth,
+                        borderColor: theme.background.val,
                     }
                 ]}>
-                    {variant && (
+                    {/* {variant && (
                         <Image
                             style={{
                                 height: size / 1.8,
@@ -88,7 +82,7 @@ export default function CircularButton(props: CircularButtonProps) {
                             }}
                             source={variants[variant].icon}
                         />
-                    )}
+                    )} */}
                     {iconComponent && (
                         iconComponent
                     )}
@@ -111,7 +105,6 @@ const styles = StyleSheet.create({
     },
 
     innerButtonContainer: {
-        borderColor: componentColors.button.border,
         borderRadius: 100,
         justifyContent: "center",
         alignItems: "center"

@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState, useImperativeHandle, ReactNode } from "react";
 import { Animated, Easing, Dimensions, Modal, View, Pressable, SafeAreaView, StyleProp, ViewStyle, StyleSheet } from "react-native";
 import { PanGestureHandler, State, GestureHandlerRootView } from "react-native-gesture-handler";
-import GradientBackground from "../ui/layout/GradientBackground";
+import GradientBackground from "../layout/GradientBackground";
 
 interface DrawerProps {
     children?: ReactNode;

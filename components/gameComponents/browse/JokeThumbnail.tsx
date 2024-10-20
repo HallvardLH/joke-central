@@ -41,7 +41,7 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                 borderRadius: 20,
                 overflow: "hidden",
                 borderWidth: 2.5,
-                borderColor: "white",
+                borderColor: theme.background.val,
             }}>
                 <GradientBackground start={gradientStart} end={gradientEnd} />
                 <View style={{
@@ -50,7 +50,7 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                     padding: 10,
                     // left: 10,
                     width: "100%",
-                    backgroundColor: "white",
+                    backgroundColor: theme.background.val,
                 }}>
                     <ProfileCard username={username} avatarURL={avatarUrl ? avatarUrl : undefined} avatarBackgroundColor={gradientStart} nameSize={14} avatarSize={30} />
                 </View>
@@ -65,11 +65,11 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                         justifyContent: "center",
                         alignItems: "center",
                         zIndex: 1,
-                        backgroundColor: "white",
+                        backgroundColor: theme.background.val,
                     }}>
                         <Text shadow={false} color={gradientEnd} style={{ textAlign: "center" }} size={15}>{title}</Text>
                     </View>
-                    <Text size={13} numberOfLines={4}>{text}</Text>
+                    <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={13} numberOfLines={4}>{text}</Text>
                 </View>
             </View>
         </View>

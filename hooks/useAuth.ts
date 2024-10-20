@@ -61,11 +61,10 @@ export default function useAuth() {
 		email: string,
 		username: string,
 		password: string,
-		avatar: number,
+		avatar: string,
 	) => {
 		email = email.toLowerCase();
 
-		if (!avatar) avatar = 0;
 
 		const { data: { user, session }, error } = await supabase.auth.signUp({
 			email,
@@ -93,7 +92,7 @@ export default function useAuth() {
 	const addToProfiles = async (
 		email: string | null,
 		username: string | null,
-		avatar: number | "default",
+		avatar: string,
 		id: string,
 	) => {
 		const { error: profileError } = await supabase
@@ -103,7 +102,7 @@ export default function useAuth() {
 					id: id,
 					username: username,
 					email: email,
-					avatar_url: avatar ? getAvatarUrl(avatar) : null,
+					avatar_url: avatar ? avatar : null,
 				},
 			]);
 
@@ -184,6 +183,12 @@ export default function useAuth() {
 		if (error) Alert.alert(error.message);
 	};
 
+	const changeAvatar = async (avatar_url: string) => {
+		if (!session?.user?.id) return false;
+		await supabase.auth.updateUser({ data: { avatar_url } });
+		return await supabase.from('profiles').update({ avatar_url }).eq('id', session?.user.id);
+	}
+
 	return {
 		signIn,
 		signUp,
@@ -192,5 +197,6 @@ export default function useAuth() {
 		session,
 		getSession,
 		anonToPermanentUser,
+		changeAvatar,
 	};
 }

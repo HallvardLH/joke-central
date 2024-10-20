@@ -1,5 +1,5 @@
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import Text from "../ui/generalUI/Text";
+import Text from "../generalUI/Text";
 import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
 
 interface DrawerLinkProps {

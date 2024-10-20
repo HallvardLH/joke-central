@@ -45,7 +45,7 @@ export default function JokeBrowse(props: JokeBrowseProps) {
                 likes={item.likes}
                 comments={item.comments}
                 gradientStart={colors.start}
-                gradientEnd={colors.end}
+                gradientEnd={colors.start}
             />
         );
     };

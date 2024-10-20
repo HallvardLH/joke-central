@@ -37,28 +37,32 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
                 <TabButton
                     onPress={() => navigation.navigate("index")}
                     label="Home"
-                    icon={<Newspaper size={26} color={theme.text1.val} />}
+                    icon={<Newspaper size={26} color={theme.background.val} />}
+                    labelColor={theme.background.val}
                     background={theme.accentBlueMedium.val}
                     highlight={theme.accentBlueDark.val}
                 />
                 <TabButton
                     onPress={() => navigation.navigate("browse")}
                     label="Browse"
-                    icon={<FileSearch2 size={26} color={theme.text1.val} />}
+                    labelColor={theme.background.val}
+                    icon={<FileSearch2 size={26} color={theme.background.val} />}
                     background={theme.accentPinkMedium.val}
                     highlight={theme.accentPinkDark.val}
                 />
                 <TabButton
                     onPress={() => navigation.navigate("create")}
                     label="Write"
-                    icon={<NotebookPen size={26} color={theme.text1.val} />}
+                    labelColor={theme.background.val}
+                    icon={<NotebookPen size={26} color={theme.background.val} />}
                     background={theme.accentPurpleLight.val}
                     highlight={theme.accentPurpleMedium.val}
                 />
                 <TabButton
                     onPress={() => navigation.navigate("profile")}
                     label="Profile"
-                    icon={<ContactRound size={26} color={theme.text1.val} />}
+                    labelColor={theme.background.val}
+                    icon={<ContactRound size={26} color={theme.background.val} />}
                     background={theme.accentYellowMedium.val}
                     highlight={theme.accentYellowDarkest.val}
                 />
