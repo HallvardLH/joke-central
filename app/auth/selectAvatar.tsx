@@ -3,9 +3,10 @@ import AvatarSelector from '@/components/gameComponents/SelectAvatar/AvatarSelec
 import { useState } from 'react';
 import { router } from "expo-router";
 import { View } from 'tamagui';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import { useTheme } from 'tamagui';
 import Text from '@/components/ui/generalUI/Text';
+import { SafeAreaView } from 'react-native';
 
 export default function selectAvatar() {
     const { changeAvatar } = useAuth();
@@ -14,14 +15,14 @@ export default function selectAvatar() {
 
     const handleSave = async () => {
         await changeAvatar(avatarUrl);
-        router.replace("/(tabs)")
+        router.navigate("/(tabs)")
     };
 
     const theme = useTheme();
     return (
 
-        <View style={{ height: Dimensions.get("window").height, flex: 1, paddingTop: 50, backgroundColor: theme.accentPurpleDark.val }}>
+        <SafeAreaView style={{ height: Dimensions.get("window").height, flex: 1, paddingTop: Platform.OS === "android" ? 80 : 0, backgroundColor: theme.accentPurpleDark.val }}>
             <AvatarSelector hideBack setAvatarUrl={setAvatarUrl} avatarUrl={avatarUrl} onBack={() => router.replace("/auth/signup")} onSave={handleSave} />
-        </View>
+        </SafeAreaView>
     );
 }

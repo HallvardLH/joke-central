@@ -4,16 +4,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { TamaguiProvider, Theme } from '@tamagui/core';
-import { Appearance, SafeAreaView, StatusBar } from 'react-native';
+import { Appearance, StatusBar } from 'react-native';
 import config from '../tamagui.config';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import useAuth from '@/hooks/useAuth'; // Import the useAuth hook
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/state/reduxStore';
+import {
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
     // Load the custom "Digitalt" font asynchronously using Expo's useFonts hook
@@ -80,29 +86,29 @@ export default function RootLayout() {
 
     // If fonts are not ready or session is still being checked, return null to prevent rendering
     if (!loaded || isCheckingSession) {
-        return null; // You can add a splash screen or loading indicator here
+        return null;
+        // TODO: add a splash screen or loading indicator here
     }
 
-    // If the user is authenticated, show the main app layout
     return (
-        <ReduxProvider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <TamaguiProvider config={config}>
-                    <Theme name={currentTheme}>
-                        <GestureHandlerRootView>
-                            {/* <SafeAreaView style={{ flex: 1 }}> */}
-                            <StatusBar translucent backgroundColor="transparent" />
-                            <Stack screenOptions={{
-                                headerShown: false,
-                            }}>
-                                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                                <Stack.Screen name="+not-found" />
-                            </Stack>
-                            {/* </SafeAreaView> */}
-                        </GestureHandlerRootView>
-                    </Theme>
-                </TamaguiProvider>
-            </PersistGate>
-        </ReduxProvider>
+        <QueryClientProvider client={queryClient}>
+            <ReduxProvider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <TamaguiProvider config={config}>
+                        <Theme name={currentTheme}>
+                            <GestureHandlerRootView>
+                                <StatusBar translucent backgroundColor="transparent" />
+                                <Stack screenOptions={{
+                                    headerShown: false,
+                                }}>
+                                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                                    <Stack.Screen name="+not-found" />
+                                </Stack>
+                            </GestureHandlerRootView>
+                        </Theme>
+                    </TamaguiProvider>
+                </PersistGate>
+            </ReduxProvider>
+        </QueryClientProvider>
     );
 }

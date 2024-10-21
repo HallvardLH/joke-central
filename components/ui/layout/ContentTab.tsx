@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity, Animated, StyleProp, ViewStyle } from "react-native";
-import { componentColors, colors } from "../misc/Colors";
 import Text from "../generalUI/Text";
 import Shadow from "../misc/Shadow";
+import { useTheme } from "tamagui";
 
 interface ContentTabProps {
     tabs: Array<{
@@ -17,6 +17,8 @@ interface ContentTabProps {
 
 export default function ContentTab(props: ContentTabProps) {
     const { tabs, contentSpacing = 25, containerStyle } = props;
+    const theme = useTheme();
+
     const [activeTab, setActiveTab] = useState(0);
 
     // Calculate width in percentage based on the number of tabs
@@ -48,6 +50,82 @@ export default function ContentTab(props: ContentTabProps) {
         })
     };
 
+    const buttonHeight = 46;
+    const buttonContainerHeight = buttonHeight + 4
+
+    const styles = StyleSheet.create({
+        container: {
+            width: "100%",
+            position: 'relative',
+            flex: 1,
+        },
+
+        controls: {
+            top: 50,
+            width: "100%",
+            position: "absolute",
+            zIndex: 2,
+
+        },
+
+        tabs: {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 1,
+        },
+        tabContent: {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100%',
+            height: '100%',
+        },
+
+        focusedContainer: {
+            position: "absolute",
+            borderColor: theme.background.val,
+            borderWidth: 2,
+            backgroundColor: theme.accentPurpleDarkest.val,
+            borderRadius: 50,
+            height: buttonContainerHeight,
+        },
+
+        tabButton: {
+            backgroundColor: "transparent",
+            borderRadius: 50,
+            borderColor: theme.background.val,
+            height: buttonHeight,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            gap: 10,
+        },
+
+        buttonContainer: {
+            flexDirection: "row",
+            width: "88%",
+            alignSelf: "center",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: buttonContainerHeight,
+            backgroundColor: theme.accentPurpleDark.val,
+            borderRadius: 50,
+            borderWidth: 2,
+            borderColor: theme.background.val,
+            overflow: "hidden",
+        },
+
+        child: {
+            justifyContent: "flex-start",
+            flex: 1,
+        }
+    });
+
     return (
         <View style={styles.container}>
             <View style={styles.controls}>
@@ -65,19 +143,19 @@ export default function ContentTab(props: ContentTabProps) {
                                 }
                             }}
                         >
-                            <Text>{tab.name}</Text>
+                            <Text shadow={theme.enableShadow.val === 1} color={theme.background.val}>{tab.name}</Text>
                             {tab.notification && tab.notification > 0 ? (
                                 <View style={{
                                     height: 22,
                                     width: 22,
                                     borderRadius: 100,
-                                    backgroundColor: colors.red.medium,
+                                    backgroundColor: theme.accentRedMedium.val,
                                     borderWidth: 1,
                                     borderColor: "white",
                                     justifyContent: "center",
                                     alignItems: "center",
                                 }}>
-                                    <Text style={{ position: "absolute", }} size={12}>{tab.notification}</Text>
+                                    <Text color={theme.background.val} style={{ position: "absolute", }} size={12}>{tab.notification}</Text>
                                 </View>
                             ) : null}
                         </TouchableOpacity>
@@ -108,79 +186,3 @@ export default function ContentTab(props: ContentTabProps) {
         </View>
     );
 }
-
-const buttonHeight = 46;
-const buttonContainerHeight = buttonHeight + 4
-
-const styles = StyleSheet.create({
-    container: {
-        width: "100%",
-        position: 'relative',
-        flex: 1,
-    },
-
-    controls: {
-        top: 50,
-        width: "100%",
-        position: "absolute",
-        zIndex: 2,
-
-    },
-
-    tabs: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 1,
-    },
-    tabContent: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        height: '100%',
-    },
-
-    focusedContainer: {
-        position: "absolute",
-        borderColor: componentColors.contentTab.border,
-        borderWidth: 2,
-        backgroundColor: componentColors.contentTab.focused,
-        borderRadius: 50,
-        height: buttonContainerHeight,
-    },
-
-    tabButton: {
-        backgroundColor: "transparent",
-        borderRadius: 50,
-        borderColor: componentColors.contentTab.border,
-        height: buttonHeight,
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "row",
-        gap: 10,
-    },
-
-    buttonContainer: {
-        flexDirection: "row",
-        width: "88%",
-        alignSelf: "center",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: buttonContainerHeight,
-        backgroundColor: componentColors.contentTab.background,
-        borderRadius: 50,
-        borderWidth: 2,
-        borderColor: componentColors.contentTab.border,
-        overflow: "hidden",
-    },
-
-    child: {
-        justifyContent: "flex-start",
-        flex: 1,
-    }
-});

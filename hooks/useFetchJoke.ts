@@ -24,7 +24,7 @@ export const useFetchJokes = () => {
                 title,
                 text,
                 author,
-                profiles (username, avatar_url)  -- Join the profiles table
+                profiles (id, username, avatar_url)  -- Join the profiles table
             `);
 
         if (error) {
@@ -36,7 +36,8 @@ export const useFetchJokes = () => {
                 text: joke.text,
                 author: joke.author,  // uid
                 username: joke.profiles?.username || 'Anonymous',
-                avatar_url: joke.profiles?.avatar_url || null
+                avatar_url: joke.profiles?.avatar_url || null,
+                uid: joke.profiles?.id,
             }));
             setJokes(transformedJokes || []);
         }

@@ -5,8 +5,6 @@ import { AVATAR_IDS } from "@/constants/General";
 import { Dispatch, SetStateAction } from "react";
 import Button from "@/components/ui/buttons/Button";
 import Text from "@/components/ui/generalUI/Text";
-import ContentBox from "@/components/ui/generalUI/ContentBox";
-import { Theme } from "tamagui";
 
 interface AvatarSelectProps {
     avatarUrl: string,
@@ -21,35 +19,33 @@ const { width, height } = Dimensions.get('window');
 export default function AvatarSelector({ avatarUrl, setAvatarUrl, hideBack, onBack, onSave }: AvatarSelectProps) {
     const theme = useTheme();
     return (
-        // <View style={{
-        //     justifyContent: "center",
-        //     alignItems: "center",
-        //     gap: 10,
-        //     paddingBottom: 100,
-
-        //     // flex: 1,
-        // }}>
         <View style={{
-            marginHorizontal: 24,
+            marginHorizontal: 14,
             gap: 14,
             alignItems: "center",
             backgroundColor: theme.background.val,
             padding: 14,
             borderRadius: 16,
-            // paddingBottom: 100,
             maxHeight: height * 0.85
         }}>
-
+            <View style={{
+                borderRadius: 20,
+                height: 26,
+                justifyContent: "center",
+                alignItems: "center",
+                width: "90%",
+                backgroundColor: theme.accentPurpleDark.val
+            }}>
+                <Text shadow={theme.enableShadow.val === 1} color={theme.background.val}>Select an avatar</Text>
+            </View>
             <Avatar
                 size={100}
                 avatarURL={avatarUrl}
             />
-            <Text style={{ textAlign: "center" }} size={24}>Select an avatar</Text>
             <ScrollView borderRadius={20} contentContainerStyle={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 10,
-                // padding: 20,
                 alignItems: "center",
                 justifyContent: "space-evenly",
                 paddingBottom: 10,
@@ -81,7 +77,7 @@ export default function AvatarSelector({ avatarUrl, setAvatarUrl, hideBack, onBa
                 <Button
                     label="Save"
                     width={width * (hideBack ? 0.8 : 0.4)}
-                    variant="blue"
+                    variant="purple"
                     onPress={onSave}
                 />
             </View>

@@ -14,6 +14,10 @@ interface ProfileTopProps {
     jokesAmount: string | number;
     likes: string | number;
     reads: string | number;
+    /** 
+    * @property Whether the edit button should be displayed on the avatar or not
+    */
+    showEdit?: boolean;
 }
 
 type DrawerRef = {
@@ -22,7 +26,7 @@ type DrawerRef = {
 };
 
 export default function ProfileTop(props: ProfileTopProps) {
-    const { username, avatarUrl, jokesAmount, likes, reads } = props;
+    const { username, avatarUrl, jokesAmount, likes, reads, showEdit } = props;
     const drawerRef1 = useRef<DrawerRef>(null);
     const theme = useTheme();
 
@@ -31,7 +35,7 @@ export default function ProfileTop(props: ProfileTopProps) {
             <View style={styles.drawerButtonContainer}>
                 <ProfileDrawer ref={drawerRef1} />
             </View>
-            <Avatar avatarURL={avatarUrl} avatarBackgroundColor={theme.accentBlueLight.val} editable size={100} />
+            <Avatar avatarURL={avatarUrl} avatarBackgroundColor={theme.accentBlueLight.val} editable={showEdit} size={100} />
             <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={22}>{username}</Text>
             <View style={styles.statsContainer}>
                 <StatBox label="Jokes" amount={format(jokesAmount)} />

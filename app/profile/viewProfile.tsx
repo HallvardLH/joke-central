@@ -2,17 +2,22 @@ import ScreenView from '@/components/ui/layout/ScreenView';
 import ProfileTop from '@/components/gameComponents/profile/ProfileTop';
 import JokeBrowse from '@/components/gameComponents/browse/JokeBrowse';
 import { ScrollView, Platform } from 'react-native';
-import useAuth from '@/hooks/useAuth';
 import { useProfile } from '@/hooks/useProfile';
 import Text from '@/components/ui/generalUI/Text';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/state/reduxStore';
+import TabBar from '@/components/ui/TabBar/TabBar';
 import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';
 import { supabase } from "@/supabase";
 import { PAGE_SIZE } from "@/constants/General";
 
-export default function Profile() {
-    const { session } = useAuth();
-    const userId = session?.user?.id;
+export default function ViewProfile() {
+    const { uid } = useSelector((state: RootState) => state.viewingProfile);
+
+    const userId = uid;
+
+    console.log(uid)
 
     const { profile, loading, error } = useProfile(userId ? userId : null)
 
@@ -24,21 +29,21 @@ export default function Profile() {
         return <ScreenView><ScrollView><Text>{error}</Text></ScrollView></ScreenView>;
     }
 
+    console.log(userId)
+
     return (
         <View style={{ flex: 1, backgroundColor: "transparent", paddingTop: Platform.OS === "android" ? 25 : 40, }}>
             <GradientBackground />
             <ScrollView style={{ width: "100%", flex: 1 }}>
                 <ProfileTop
-                    username={profile.username || 'Guest'}
-                    // Fallback avatar if null
-                    avatarUrl={profile.avatar_url || 'https://default-avatar-url.com/default.png'}
+                    username={profile.username || 'Guest'} // Display fetched username or fallback
+                    avatarUrl={profile.avatar_url || 'https://default-avatar-url.com/default.png'} // Fallback avatar if null
                     reads={2351}
                     likes={2223233}
                     jokesAmount={999}
-                    showEdit
                 />
                 <JokeBrowse
-                    queryKey={userId + "_profile"}
+                    queryKey={userId + "_browse"}
                     queryFn={async (page: number) => {
                         return await supabase.from('jokes')
                             .select(`
@@ -51,6 +56,7 @@ export default function Profile() {
                     }}
                 />
             </ScrollView>
+            <TabBar />
         </View>
     );
 }

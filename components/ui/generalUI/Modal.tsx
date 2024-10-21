@@ -31,7 +31,7 @@ export default function Modal(props: ModalProps) {
                     </TouchableWithoutFeedback>
                     {!noExit && (
                         <View style={styles.closeButton}>
-                            <CircularButton size={36} variant="close" onPress={onRequestClose} />
+                            <CircularButton size={36} variant="purple" onPress={onRequestClose} />
                         </View>
                     )}
                 </View>

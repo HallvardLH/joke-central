@@ -1,7 +1,6 @@
 import { View } from "tamagui";
 import GradientBackground from "../../ui/layout/GradientBackground";
 import Text from "../../ui/generalUI/Text";
-import ContentBox from "../../ui/generalUI/ContentBox";
 import { Dimensions } from "react-native";
 import Shadow from "../../ui/misc/Shadow";
 import ProfileCard from "../feed/ProfileCard";
@@ -10,20 +9,21 @@ import { useTheme } from "tamagui";
 interface JokeThumbnailProps {
     title: string,
     text: string,
+    uid: string,
     username: string,
     avatarUrl: string | null;
     gradientStart: string,
     gradientEnd: string,
-    // Whether the user has read the joke or not
     hasRead: boolean,
     likes: number,
     comments: number,
+    createdAt: string,
 }
 
 const screenWidth = Dimensions.get("screen").width;
 
 export default function JokeThumbnail(props: JokeThumbnailProps) {
-    const { title, text, username, avatarUrl, gradientStart, gradientEnd, hasRead, likes, comments } = props;
+    const { title, text, uid, username, avatarUrl, gradientStart, gradientEnd, hasRead, likes, comments, createdAt } = props;
 
     const theme = useTheme();
     return (
@@ -36,8 +36,6 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                 width: screenWidth / 2 - 30,
                 minHeight: 200,
                 maxHeight: 200,
-
-                // padding: 10,
                 borderRadius: 20,
                 overflow: "hidden",
                 borderWidth: 2.5,
@@ -45,14 +43,12 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
             }}>
                 <GradientBackground start={gradientStart} end={gradientEnd} />
                 <View style={{
-                    // position: "absolute",
                     bottom: 0,
                     padding: 10,
-                    // left: 10,
                     width: "100%",
                     backgroundColor: theme.background.val,
                 }}>
-                    <ProfileCard username={username} avatarURL={avatarUrl ? avatarUrl : undefined} avatarBackgroundColor={gradientStart} nameSize={14} avatarSize={30} />
+                    <ProfileCard createdAt={createdAt} uid={uid} username={username} avatarURL={avatarUrl ? avatarUrl : undefined} avatarBackgroundColor={gradientStart} nameSize={14} avatarSize={30} />
                 </View>
                 <View style={{
                     padding: 10,

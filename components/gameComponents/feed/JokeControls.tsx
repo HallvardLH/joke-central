@@ -7,6 +7,7 @@ import { useTheme } from "tamagui";
 
 export default function JokeControls() {
     const theme = useTheme();
+    return null
     return (
         <View style={[{ backgroundColor: theme.accentPurpleMedium.val, }, styles.container]}>
             <Avatar size={40} />
@@ -31,16 +32,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 5,
         backgroundColor: "transparent",
-
-        // alignSelf: "center",
-        // justifyContent: "space-between",
-        // borderRadius: 20,
-        // borderWidth: 2,
-        // borderColor: "white",
-        // overflow: "hidden",
     },
-
-
 
     statContainer: {
         alignItems: "center",

@@ -3,14 +3,16 @@ import { View, StyleSheet, Keyboard, Platform, SafeAreaView } from "react-native
 import TabButton from "./TabButton";
 import { useTheme } from 'tamagui';
 import { Newspaper, FileSearch2, NotebookPen, ContactRound } from '@tamagui/lucide-icons';
+import { router } from 'expo-router';
 
 interface TabBarProps {
     height?: number;
-    navigation: any;
-    state: any; // Contains the current tab state
+    backgroundColor?: string;
+    navigation?: any;
+    state?: any; // Contains the current tab state
 }
 
-export default function TabBar({ height = 100, navigation, state }: TabBarProps) {
+export default function TabBar({ height = 100, backgroundColor, navigation, state }: TabBarProps) {
     const theme = useTheme();
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -30,12 +32,19 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
 
     if (isKeyboardVisible) return null;
 
-    // backgroundColor: theme.background1Dark.val
     return (
-        <SafeAreaView>
-            <View style={[styles.container, { height: height, }]}>
+        <SafeAreaView style={{ backgroundColor: theme.accentPurpleDarkest.val }}>
+            <View style={[
+                styles.container,
+                {
+                    height: height,
+                    backgroundColor: backgroundColor ? backgroundColor : theme.accentPurpleDarkest.val,
+                    borderTopWidth: 2.5,
+                    borderColor: theme.background.val,
+                }
+            ]}>
                 <TabButton
-                    onPress={() => navigation.navigate("index")}
+                    onPress={() => router.replace("/(tabs)/")}
                     label="Home"
                     icon={<Newspaper size={26} color={theme.background.val} />}
                     labelColor={theme.background.val}
@@ -43,7 +52,7 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
                     highlight={theme.accentBlueDark.val}
                 />
                 <TabButton
-                    onPress={() => navigation.navigate("browse")}
+                    onPress={() => router.replace("/(tabs)/browse")}
                     label="Browse"
                     labelColor={theme.background.val}
                     icon={<FileSearch2 size={26} color={theme.background.val} />}
@@ -51,7 +60,7 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
                     highlight={theme.accentPinkDark.val}
                 />
                 <TabButton
-                    onPress={() => navigation.navigate("create")}
+                    onPress={() => router.replace("/(tabs)/create")}
                     label="Write"
                     labelColor={theme.background.val}
                     icon={<NotebookPen size={26} color={theme.background.val} />}
@@ -59,7 +68,7 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
                     highlight={theme.accentPurpleMedium.val}
                 />
                 <TabButton
-                    onPress={() => navigation.navigate("profile")}
+                    onPress={() => router.replace("/(tabs)/profile")}
                     label="Profile"
                     labelColor={theme.background.val}
                     icon={<ContactRound size={26} color={theme.background.val} />}
@@ -73,8 +82,9 @@ export default function TabBar({ height = 100, navigation, state }: TabBarProps)
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        bottom: Platform.OS === "ios" ? 50 : 0,
+        // position: "absolute",
+        bottom: 0,
+        paddingBottom: Platform.OS === "ios" ? 0 : 0,
         left: 0,
         right: 0,
         width: "100%",

@@ -1,7 +1,6 @@
-import { View, TouchableOpacity, StyleSheet, Image, Text as RNText } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Text from "../generalUI/Text";
 import Shadow from "../misc/Shadow";
-import { componentColors } from "../misc/Colors";
 import { useTheme } from 'tamagui';
 
 interface TabButtonProps {
@@ -19,7 +18,7 @@ const borderWidth = 2.5;
 const shadowWidth = width + borderWidth * 2;
 
 const innerButtonHeight = 68;
-const backgroundHeight = innerButtonHeight + 12;
+const backgroundHeight = innerButtonHeight + 11.5;
 
 const borderRadius = 15;
 

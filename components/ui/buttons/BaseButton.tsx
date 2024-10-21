@@ -1,9 +1,9 @@
 import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import Text from "../generalUI/Text";
-import { componentColors } from "../misc/Colors";
 import Shadow from "../misc/Shadow";
 import { percentageOf as p } from "@/scripts/utils";
+import { useTheme } from "tamagui";
 
 interface BaseButtonProps {
     leftColor?: string;
@@ -39,6 +39,8 @@ export default function BaseButton(props: BaseButtonProps) {
         disabled,
     } = props;
 
+    const theme = useTheme();
+
     const buttonWidth = p(widthPercentage, 100);
     const buttonContainerWidth = buttonWidth + (borderWidth * 2);
 
@@ -63,6 +65,7 @@ export default function BaseButton(props: BaseButtonProps) {
             <View style={[
                 styles.container,
                 {
+                    borderColor: theme.background.val,
                     borderWidth: borderWidth,
                     borderTopWidth: 2.5,
                     width: buttonContainerWidth,
@@ -98,7 +101,7 @@ export default function BaseButton(props: BaseButtonProps) {
                             fill={rightColor}
                         />
                     </Svg>
-                    <Text shadow style={[styles.buttonText, { fontSize: fontSize }]}>{label}</Text>
+                    <Text shadow style={[styles.buttonText, { fontSize: fontSize, color: theme.background.val }]}>{label}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -107,7 +110,6 @@ export default function BaseButton(props: BaseButtonProps) {
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: componentColors.button.border,
         overflow: "hidden",
     },
 
@@ -124,7 +126,6 @@ const styles = StyleSheet.create({
 
     buttonText: {
         position: "absolute",
-        color: componentColors.button.text,
         fontSize: 24,
     },
 });

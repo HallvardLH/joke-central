@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ContentBox from '../../ui/generalUI/ContentBox';
 import { Input, TextArea, useTheme, View, ScrollView } from 'tamagui';
 import Text from '@/components/ui/generalUI/Text';
 import Button from '@/components/ui/buttons/Button';
@@ -25,12 +24,12 @@ export default function CreateCard() {
             return;
         }
 
-        const uid = data?.user?.id;  // Extract the user's UID from the response
+        const uid = data?.user?.id;
 
         if (jokeText.trim() && uid) {
-            const result = await publishJoke(jokeTitle, jokeText, uid);  // Pass the UID as author
+            const result = await publishJoke(jokeTitle, jokeText, uid);
             if (result) {
-                setJokeText(''); // Clear the textarea on success
+                setJokeText('');
             }
         } else {
             alert('Please write a joke and make sure you are logged in.');
@@ -54,10 +53,9 @@ export default function CreateCard() {
                     <Button
                         variant="pink"
                         label="Delete"
-                        onPress={() => setJokeText('')} // Clear the textarea
+                        onPress={() => setJokeText('')}
                     />
                 </View>
-                {/* <ContentBox style={{ paddingBottom: 200, }} title="Write your own joke"> */}
                 <View style={{
                     marginHorizontal: 24,
                     gap: 14,
@@ -83,6 +81,7 @@ export default function CreateCard() {
                         borderColor={theme.inputBorder.val}
                         padding={10}
                         focusStyle={{ borderColor: theme.inputBorderFocus.val }}
+                        color={theme.isLightMode.val === 1 ? theme.background2.val : theme.background.val}
                     />
                     <TextArea
                         value={jokeText}
@@ -97,12 +96,11 @@ export default function CreateCard() {
                         multiline
                         minHeight={200}
                         maxHeight={height / 3}
-                        color={theme.accentPurpleDark}
+                        color={theme.isLightMode.val === 1 ? theme.background2.val : theme.background.val}
                         backgroundColor={theme.isLightMode.val === 1 ? theme.background.val : theme.background2.val}
                     />
                 </View>
                 {error && <Text style={{ color: 'red' }}>{error}</Text>}
-                {/* </ContentBox> */}
             </View>
         </ScrollView>
     );

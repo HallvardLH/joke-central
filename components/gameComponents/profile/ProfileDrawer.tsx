@@ -20,6 +20,11 @@ const ProfileDrawer = forwardRef<DrawerRef>((_, ref) => {
 
     const { signOut } = useAuth();
 
+    const handleSignOut = () => {
+        drawerRef.current?.closeDrawer();
+        signOut();
+    }
+
     useImperativeHandle(ref, () => ({
         openDrawer: () => {
             drawerRef.current?.openDrawer();
@@ -37,7 +42,7 @@ const ProfileDrawer = forwardRef<DrawerRef>((_, ref) => {
                 <TouchableOpacity onPress={() => drawerRef.current?.closeDrawer()}>
                     <Text>Close drawer</Text>
                 </TouchableOpacity>
-                <Button label="Log out" onPress={signOut} />
+                <Button label="Log out" onPress={handleSignOut} />
             </Drawer>
         </View>
     );
