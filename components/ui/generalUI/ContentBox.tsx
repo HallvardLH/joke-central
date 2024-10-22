@@ -7,7 +7,6 @@ import { View, StyleSheet, StyleProp, ViewStyle, DimensionValue } from "react-na
 import { componentColors } from "../misc/Colors";
 import Text from "./Text";
 import Shadow from "../misc/Shadow";
-import RibbonTitle from "./RibbonTitle";
 import { useTheme } from "tamagui";
 
 interface ContentBoxProps {
@@ -20,14 +19,6 @@ interface ContentBoxProps {
     style?: StyleProp<ViewStyle>;
     headerColor?: string;
     isLoading?: boolean;
-    /** 
-    * @property Replaces the normal title with a big fancy title
-    */
-    ribbonTitle?: {
-        topText: string;
-        bottomText: string;
-        stars?: boolean;
-    }
     width?: DimensionValue;
     heightOverride?: number;
 }
@@ -43,7 +34,6 @@ export default function ContentBox(props: ContentBoxProps) {
         style,
         headerColor = componentColors.contentBox.highlight,
         isLoading = false,
-        ribbonTitle,
         width = "88%",
         heightOverride,
     } = props;

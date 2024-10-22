@@ -1,25 +1,35 @@
+import JokeFeedItem from './JokeFeedItem';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, RefreshControl } from 'react-native';
+import { RefreshControl, Dimensions } from 'react-native';
 import Text from '../../ui/generalUI/Text';
 import { useTheme } from 'tamagui';
-import JokeThumbnail from './JokeThumbnail';
 import { FlashList } from '@shopify/flash-list';
 import {
     useInfiniteQuery,
     useQueryClient,
 } from '@tanstack/react-query';
 import { PAGE_SIZE } from '@/constants/General';
-import { Joke } from './Joke';
+import { Joke } from '../browse/Joke';
 
-interface JokeBrowseProps {
-    paddingTop?: boolean;
+const { height } = Dimensions.get('window');
+
+interface JokeFeedProps {
     queryKey: any;
     queryFn: any;
 }
 
-export default function JokeBrowse(props: JokeBrowseProps) {
+export default function JokeFeed(props: JokeFeedProps) {
+    const { queryKey, queryFn } = props;
 
-    const { paddingTop, queryKey, queryFn } = props;
+    const theme = useTheme();
+
+    const gradientColors = [
+        { start: theme.accentPurpleMedium.val, end: theme.accentPurpleDarkest.val },
+        { start: theme.accentBlueMedium.val, end: theme.accentBlueDark.val },
+        { start: theme.accentPinkMedium.val, end: theme.accentPinkDark.val },
+        { start: theme.accentYellowMedium.val, end: theme.accentYellowDarkest.val },
+        { start: theme.accentGreenLight.val, end: theme.accentGreenDark.val },
+    ];
 
     const queryClient = useQueryClient();
 
@@ -63,36 +73,21 @@ export default function JokeBrowse(props: JokeBrowseProps) {
         }
     };
 
-    const theme = useTheme();
-
-    const gradientColors = [
-        { start: theme.accentPurpleMedium.val, end: theme.accentPurpleDarkest.val },
-        { start: theme.accentBlueMedium.val, end: theme.accentBlueDark.val },
-        { start: theme.accentPinkMedium.val, end: theme.accentPinkDark.val },
-        { start: theme.accentYellowMedium.val, end: theme.accentYellowDarkest.val },
-        { start: theme.accentGreenLight.val, end: theme.accentGreenDark.val },
-    ];
-
     const renderItem = ({ item, index }: {
         item: Joke,
         index: number
     }) => {
+        // Get the color set based on the index, cycle back to the start using modulo
         const colors = gradientColors[index % gradientColors.length];
         return (
-            <JokeThumbnail
+            <JokeFeedItem
                 joke={item}
                 gradientStart={colors.start}
                 gradientEnd={colors.end}
+                headerColor={colors.end}
             />
         );
     };
-
-    const styles = StyleSheet.create({
-        list: {
-            paddingBottom: 120,
-            paddingTop: paddingTop ? 100 : 0,
-        },
-    });
 
     if (isError) {
         return <Text>Error loading list: {error.message}</Text>;
@@ -103,14 +98,15 @@ export default function JokeBrowse(props: JokeBrowseProps) {
             data={items}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            numColumns={2}
             showsVerticalScrollIndicator={false}
+            snapToInterval={height} // Snap at multiples of screen height
+            decelerationRate="fast" // Make scroll snappy
+            snapToAlignment="start" // Snap to the top of the screen
             refreshControl={<RefreshControl onRefresh={refresh} refreshing={isFetching} colors={['lightblue']} />}
-            contentContainerStyle={styles.list}
+            estimatedItemSize={height}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
             refreshing={isFetchingNextPage}
-            estimatedItemSize={100}
         />
     );
 }

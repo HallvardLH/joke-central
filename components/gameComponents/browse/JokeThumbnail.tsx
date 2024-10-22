@@ -1,73 +1,100 @@
-import { View } from "tamagui";
+import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import GradientBackground from "../../ui/layout/GradientBackground";
 import Text from "../../ui/generalUI/Text";
-import { Dimensions } from "react-native";
 import Shadow from "../../ui/misc/Shadow";
 import ProfileCard from "../feed/ProfileCard";
 import { useTheme } from "tamagui";
+import { router } from "expo-router";
+import { useDispatch } from 'react-redux';
+import { updateViewingJoke } from "@/state/viewingJokeSlice";
+import { Joke } from "./Joke";
 
 interface JokeThumbnailProps {
-    title: string,
-    text: string,
-    uid: string,
-    username: string,
-    avatarUrl: string | null;
+    joke: Joke,
     gradientStart: string,
     gradientEnd: string,
-    hasRead: boolean,
-    likes: number,
-    comments: number,
-    createdAt: string,
 }
 
 const screenWidth = Dimensions.get("screen").width;
 
 export default function JokeThumbnail(props: JokeThumbnailProps) {
-    const { title, text, uid, username, avatarUrl, gradientStart, gradientEnd, hasRead, likes, comments, createdAt } = props;
+    const { joke, gradientStart, gradientEnd } = props;
+
+    const dispatch = useDispatch();
+    const handleTapCard = () => {
+        router.navigate("/joke/readJoke");
+        dispatch(updateViewingJoke(joke));
+    }
 
     const theme = useTheme();
+    const styles = createStyles(screenWidth, theme);
+
     return (
-        <View style={{
-            marginHorizontal: 15,
-            marginVertical: 15,
-        }}>
+        <View style={styles.container}>
             <Shadow shadowHeight={6} borderRadius={20} height={200} width={screenWidth / 2 - 30} />
-            <View style={{
-                width: screenWidth / 2 - 30,
-                minHeight: 200,
-                maxHeight: 200,
-                borderRadius: 20,
-                overflow: "hidden",
-                borderWidth: 2.5,
-                borderColor: theme.background.val,
-            }}>
+            <View style={styles.thumbnailContainer}>
                 <GradientBackground start={gradientStart} end={gradientEnd} />
-                <View style={{
-                    bottom: 0,
-                    padding: 10,
-                    width: "100%",
-                    backgroundColor: theme.background.val,
-                }}>
-                    <ProfileCard createdAt={createdAt} uid={uid} username={username} avatarURL={avatarUrl ? avatarUrl : undefined} avatarBackgroundColor={gradientStart} nameSize={14} avatarSize={30} />
+                <View style={styles.profileCardContainer}>
+                    <ProfileCard
+                        createdAt={joke.created_at}
+                        uid={joke.profiles.id}
+                        username={joke.profiles.username}
+                        avatarURL={joke.profiles.avatar_url ? joke.profiles.avatar_url : undefined}
+                        avatarBackgroundColor={gradientStart}
+                        nameSize={14}
+                        avatarSize={30}
+                    />
                 </View>
-                <View style={{
-                    padding: 10,
-                    borderRadius: 20,
-                    gap: 6,
-                }}>
-                    <View style={{
-                        borderRadius: 20,
-                        height: 22,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1,
-                        backgroundColor: theme.background.val,
-                    }}>
-                        <Text shadow={false} color={gradientEnd} style={{ textAlign: "center" }} size={15}>{title}</Text>
+                <TouchableOpacity onPress={handleTapCard} style={styles.touchableContainer}>
+                    <View style={styles.titleContainer}>
+                        <Text shadow={false} color={gradientEnd} style={styles.titleText} size={15}>
+                            {joke.title}
+                        </Text>
                     </View>
-                    <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={13} numberOfLines={4}>{text}</Text>
-                </View>
+                    <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={13} numberOfLines={4}>
+                        {joke.text}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 }
+
+const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
+    container: {
+        marginHorizontal: 15,
+        marginVertical: 15,
+    },
+    thumbnailContainer: {
+        width: screenWidth / 2 - 30,
+        minHeight: 200,
+        maxHeight: 200,
+        borderRadius: 20,
+        overflow: "hidden",
+        borderWidth: 2.5,
+        borderColor: theme.background.val,
+    },
+    profileCardContainer: {
+        bottom: 0,
+        padding: 10,
+        width: "100%",
+        backgroundColor: theme.background.val,
+    },
+    touchableContainer: {
+        padding: 10,
+        borderRadius: 20,
+        gap: 6,
+        flex: 1,
+    },
+    titleContainer: {
+        borderRadius: 20,
+        height: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 1,
+        backgroundColor: theme.background.val,
+    },
+    titleText: {
+        textAlign: "center",
+    },
+});

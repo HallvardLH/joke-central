@@ -39,23 +39,7 @@ export default function CreateCard() {
     return (
         <ScrollView keyboardDismissMode="on-drag">
             <View style={{ gap: 10 }}>
-                <View style={{
-                    paddingHorizontal: 22,
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                }}>
-                    <Button
-                        variant="blue"
-                        label={loading ? 'Posting...' : 'Post joke'}
-                        onPress={handlePublish}
-                        disabled={loading}
-                    />
-                    <Button
-                        variant="pink"
-                        label="Delete"
-                        onPress={() => setJokeText('')}
-                    />
-                </View>
+
                 <View style={{
                     marginHorizontal: 24,
                     gap: 14,
@@ -70,7 +54,7 @@ export default function CreateCard() {
                         alignItems: "center",
                         backgroundColor: theme.accentPurpleDark.val
                     }}>
-                        <Text shadow={theme.enableShadow.val === 1} color={theme.background.val}>Write your own joke</Text>
+                        <Text shadow={theme.enableShadow.val === 1} color={theme.background.val}>Write a joke</Text>
                     </View>
                     <Input
                         value={jokeTitle}
@@ -99,7 +83,26 @@ export default function CreateCard() {
                         color={theme.isLightMode.val === 1 ? theme.background2.val : theme.background.val}
                         backgroundColor={theme.isLightMode.val === 1 ? theme.background.val : theme.background2.val}
                     />
+                    <View style={{
+                        paddingHorizontal: 22,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                    }}>
+                        <Button
+                            variant="pink"
+                            label="Delete"
+                            onPress={() => setJokeText('')}
+                        />
+                        <Button
+                            variant="blue"
+                            label={loading ? 'Posting...' : 'Post joke'}
+                            onPress={handlePublish}
+                            disabled={loading}
+                        />
+
+                    </View>
                 </View>
+
                 {error && <Text style={{ color: 'red' }}>{error}</Text>}
             </View>
         </ScrollView>

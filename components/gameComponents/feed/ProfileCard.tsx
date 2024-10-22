@@ -4,7 +4,7 @@ import { View } from "tamagui";
 import Text from "../../ui/generalUI/Text";
 import { useTheme } from "tamagui";
 import { useDispatch } from 'react-redux';
-import { updateViewingProfileUid } from "@/state/viewingPorfileSlice";
+import { updateViewingProfileUid } from "@/state/viewingProfileSlice";
 import { router } from "expo-router";
 import useAuth from "@/hooks/useAuth";
 
