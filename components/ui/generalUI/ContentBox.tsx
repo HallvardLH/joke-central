@@ -59,7 +59,7 @@ export default function ContentBox(props: ContentBoxProps) {
     };
 
     return (
-        <View style={[styles.container, ribbonTitle ? { marginTop: 25 } : null]}>
+        <View style={styles.container}>
             <Shadow height={containerHeight} shadowHeight={8} width={width} borderRadius={20} />
             <View style={[
                 styles.background,
@@ -70,26 +70,16 @@ export default function ContentBox(props: ContentBoxProps) {
             <View style={[styles.contentBoxContainer, style, { width: width, backgroundColor: theme.background.val, maxHeight: heightOverride ? heightOverride : 450, }]} onLayout={onLayout}>
                 {beforeHeader}
                 <>
-                    {ribbonTitle && (
-                        <View style={styles.ribbonTitleConatiner}>
-                            <RibbonTitle stars={false} topText={ribbonTitle.topText} bottomText={ribbonTitle.bottomText ? ribbonTitle.bottomText : title} />
-                        </View>
-                    )}
                     {isLoading ? (
                         null // TODO: add loading indicator
                     ) : (
                         <>
-                            {!ribbonTitle && title && (
-                                <View style={[styles.titleContainer, { backgroundColor: headerColor }]}>
-                                    <Text shadow={false}>{title ? title : null}</Text>
-                                </View>
-                            )}
                             {text && (
                                 <View style={styles.textContainer}>
                                     <Text shadow={false} color={textColor} style={{ textAlign: "center" }}>{text}</Text>
                                 </View>
                             )}
-                            <View style={[ribbonTitle ? { marginTop: 40 } : null, { gap: 10 }]}>
+                            <View style={[{ gap: 10 }]}>
                                 {children}
                             </View>
                             {afterChildren}

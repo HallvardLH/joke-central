@@ -10,11 +10,13 @@ interface Joke {
     avatar_url: string | null;
 }
 
-export const useFetchJokes = () => {
+export const useFetchJokes = (userId: string | undefined) => {
     const [jokes, setJokes] = useState<Joke[]>([]);
+    const [userReads, setUserReads] = useState<number[]>([]); // Changed to number[] to match joke_id type
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Fetch all jokes
     const fetchJokes = async () => {
         setLoading(true);
         const { data, error } = await supabase
@@ -44,9 +46,31 @@ export const useFetchJokes = () => {
         setLoading(false);
     };
 
+    // Fetch jokes that the user has marked as read
+    const fetchUserReads = async (userId: string) => {
+        const { data: readJokes, error: readJokesError } = await supabase
+            .from('joke_read_status')
+            .select('joke_id')
+            .eq('user_id', userId);
+
+        if (readJokesError) {
+            console.error('Error fetching read jokes:', readJokesError);
+            setError(readJokesError.message);
+            return;
+        }
+
+        setUserReads(readJokes.map(joke => joke.joke_id));
+    };
+
     useEffect(() => {
-        fetchJokes(); // Initial fetch
+        fetchJokes(); // Fetch jokes when the component mounts
     }, []);
 
-    return { jokes, loading, error, refetch: fetchJokes };
+    useEffect(() => {
+        if (userId) {
+            fetchUserReads(userId); // Fetch user reads if userId is provided
+        }
+    }, [userId]);
+
+    return { jokes, userReads, loading, error, refetch: fetchJokes };
 };

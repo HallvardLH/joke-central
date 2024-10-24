@@ -15,6 +15,7 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query';
+import { PortalProvider } from 'tamagui';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -95,17 +96,19 @@ export default function RootLayout() {
             <ReduxProvider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <TamaguiProvider config={config}>
-                        <Theme name={currentTheme}>
-                            <GestureHandlerRootView>
-                                <StatusBar translucent backgroundColor="transparent" />
-                                <Stack screenOptions={{
-                                    headerShown: false,
-                                }}>
-                                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                                    <Stack.Screen name="+not-found" />
-                                </Stack>
-                            </GestureHandlerRootView>
-                        </Theme>
+                        <PortalProvider>
+                            <Theme name={currentTheme}>
+                                <GestureHandlerRootView>
+                                    <StatusBar translucent backgroundColor="transparent" />
+                                    <Stack screenOptions={{
+                                        headerShown: false,
+                                    }}>
+                                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                                        <Stack.Screen name="+not-found" />
+                                    </Stack>
+                                </GestureHandlerRootView>
+                            </Theme>
+                        </PortalProvider>
                     </TamaguiProvider>
                 </PersistGate>
             </ReduxProvider>

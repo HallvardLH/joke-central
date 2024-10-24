@@ -7,6 +7,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import ProfileCard from "./ProfileCard";
 import { Joke } from "../browse/Joke";
 import ContentBoxLight, { Header } from "@/components/ui/generalUI/ContentBoxLight";
+import DeleteButton from "./DeleteButton";
+import useAuth from "@/hooks/useAuth";
 
 interface JokeListItemProps {
     joke: Joke,
@@ -19,6 +21,10 @@ const { height } = Dimensions.get('window');
 
 export default function JokeFeedItem(props: JokeListItemProps) {
     const { joke, gradientStart, gradientEnd, headerColor } = props;
+
+    const { session } = useAuth();
+    const userId = session?.user?.id;
+
     return (
         <View style={styles.item}>
             <GradientBackground start={gradientStart} end={gradientEnd} />
@@ -49,8 +55,11 @@ export default function JokeFeedItem(props: JokeListItemProps) {
                         createdAt={joke.created_at}
                         uid={joke.profiles.id}
                     />
-                    <JokeControls iconColor={gradientEnd} />
+                    <JokeControls joke={joke} iconColor={gradientEnd} />
                 </View>
+                {userId === joke.author && (
+                    <DeleteButton joke={joke} />
+                )}
             </ContentBoxLight>
         </View>
     )

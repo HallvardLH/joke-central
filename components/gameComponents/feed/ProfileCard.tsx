@@ -59,7 +59,7 @@ export default function ProfileCard(props: ProfileCardProps) {
             <Avatar avatarURL={avatarURL} avatarBackgroundColor={avatarBackgroundColor} size={avatarSize} />
             <View style={styles.textContainer}>
                 <Text size={nameSize} shadow={false} color={"gray"}>{username}</Text>
-                <Text style={{ marginTop: -6 }} size={12} numberOfLines={1}>{formattedCreatedAt}</Text>
+                <Text shadow={false} color={"gray"} style={{ marginTop: -6 }} size={12} numberOfLines={1}>{formattedCreatedAt}</Text>
             </View>
         </TouchableOpacity>
     )

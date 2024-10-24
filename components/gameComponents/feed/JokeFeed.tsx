@@ -10,6 +10,9 @@ import {
 } from '@tanstack/react-query';
 import { PAGE_SIZE } from '@/constants/General';
 import { Joke } from '../browse/Joke';
+import useMarkJokeAsRead from '@/hooks/useMarkJokeAsRead';
+import useAuth from '@/hooks/useAuth';
+import { View } from 'tamagui';
 
 const { height } = Dimensions.get('window');
 
@@ -18,11 +21,17 @@ interface JokeFeedProps {
     queryFn: any;
 }
 
+interface ViewableItem {
+    isViewable: boolean;
+    item: Joke;
+}
+interface ViewableItemsChangedProps {
+    viewableItems: ViewableItem[];
+}
+
 export default function JokeFeed(props: JokeFeedProps) {
     const { queryKey, queryFn } = props;
-
     const theme = useTheme();
-
     const gradientColors = [
         { start: theme.accentPurpleMedium.val, end: theme.accentPurpleDarkest.val },
         { start: theme.accentBlueMedium.val, end: theme.accentBlueDark.val },
@@ -32,7 +41,6 @@ export default function JokeFeed(props: JokeFeedProps) {
     ];
 
     const queryClient = useQueryClient();
-
     const [items, setItems] = useState<any[]>([]);
 
     const {
@@ -58,13 +66,12 @@ export default function JokeFeed(props: JokeFeedProps) {
 
     useEffect(() => {
         if (!data) return;
-
         const temp_items: any[] = data.pages.flatMap(page => page.data ?? []);
         setItems(temp_items);
     }, [data]);
 
     const refresh = async () => {
-        queryClient.resetQueries({ queryKey, exact: true });
+        await queryClient.resetQueries({ queryKey, exact: true });
     };
 
     const onEndReached = () => {
@@ -73,11 +80,34 @@ export default function JokeFeed(props: JokeFeedProps) {
         }
     };
 
+    const { markJokeAsRead, isLoading } = useMarkJokeAsRead();
+    const { session } = useAuth();
+    const userId = session?.user?.id;
+
+    // If userId is not available, don't call markJokeAsRead
+    if (!userId) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Loading user data...</Text>
+            </View>
+        );
+    }
+
+    // Triggers when a joke is in view,
+    // Marks the joke as read in database
+    const onViewableItemsChanged = ({ viewableItems }: ViewableItemsChangedProps) => {
+        viewableItems.forEach((viewable) => {
+            if (viewable.isViewable && userId) {
+                markJokeAsRead({ jokeId: viewable.item.id, userId });
+            }
+        });
+    };
+
+
     const renderItem = ({ item, index }: {
         item: Joke,
         index: number
     }) => {
-        // Get the color set based on the index, cycle back to the start using modulo
         const colors = gradientColors[index % gradientColors.length];
         return (
             <JokeFeedItem
@@ -99,13 +129,14 @@ export default function JokeFeed(props: JokeFeedProps) {
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
-            snapToInterval={height} // Snap at multiples of screen height
-            decelerationRate="fast" // Make scroll snappy
-            snapToAlignment="start" // Snap to the top of the screen
+            snapToInterval={height}
+            decelerationRate="fast"
+            snapToAlignment="start"
             refreshControl={<RefreshControl onRefresh={refresh} refreshing={isFetching} colors={['lightblue']} />}
             estimatedItemSize={height}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
+            onViewableItemsChanged={onViewableItemsChanged}
             refreshing={isFetchingNextPage}
         />
     );

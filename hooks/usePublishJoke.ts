@@ -24,6 +24,15 @@ export function usePublishJoke() {
         }
     };
 
-    return { publishJoke, loading, error };
+    const deleteJoke = async (id: number) => {
+        const { data, error } = await supabase
+            .from('jokes')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+    }
+
+    return { publishJoke, deleteJoke, loading, error };
 }
 

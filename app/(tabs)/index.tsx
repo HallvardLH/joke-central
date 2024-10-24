@@ -1,4 +1,5 @@
 import OfficialFeed from '../home/OfficialFeed';
+import ContentBox from '@/components/ui/generalUI/ContentBox';
 import ContentTab from '@/components/ui/layout/ContentTab';
 import ScreenView from '@/components/ui/layout/ScreenView';
 import { View } from 'tamagui';
@@ -18,7 +19,7 @@ export default function Home() {
                     },
                     {
                         name: "Community",
-                        component: <OfficialFeed />,
+                        component: <ContentBox />,
                     }
                 ]}
             />

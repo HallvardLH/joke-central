@@ -8,6 +8,8 @@ import { router } from "expo-router";
 import { useDispatch } from 'react-redux';
 import { updateViewingJoke } from "@/state/viewingJokeSlice";
 import { Joke } from "./Joke";
+import useAuth from "@/hooks/useAuth";
+import DeleteButton from "../feed/DeleteButton";
 
 interface JokeThumbnailProps {
     joke: Joke,
@@ -28,6 +30,9 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
 
     const theme = useTheme();
     const styles = createStyles(screenWidth, theme);
+
+    const { session } = useAuth();
+    const userId = session?.user?.id;
 
     return (
         <View style={styles.container}>
@@ -55,6 +60,9 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                         {joke.text}
                     </Text>
                 </TouchableOpacity>
+                {userId === joke.author && (
+                    <DeleteButton joke={joke} />
+                )}
             </View>
         </View>
     );
