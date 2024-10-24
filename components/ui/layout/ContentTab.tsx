@@ -163,24 +163,18 @@ export default function ContentTab(props: ContentTabProps) {
                 </View>
             </View>
             <View style={styles.tabs}>
-                {tabs.map((tab, index) => (
-                    <Animated.View
-                        key={index}
-                        style={[
-                            styles.tabContent,
-                            {
-                                opacity: activeTab === index ? 1 : 0,
-                                // top: 50 + contentSpacing,
-                                // Ensure only the active tab is interactable
-                                zIndex: activeTab === index ? 1 : 0,
-                            },
-                        ]}
-                    >
-                        <View style={[styles.child, containerStyle]}>
-                            {tab.component}
-                        </View>
-                    </Animated.View>
-                ))}
+                {/* Only render the active tab's content */}
+                <Animated.View
+                    key={activeTab}
+                    style={[
+                        styles.tabContent,
+                        { opacity: 1, zIndex: 1 },
+                    ]}
+                >
+                    <View style={[styles.child, containerStyle]}>
+                        {tabs[activeTab].component}
+                    </View>
+                </Animated.View>
             </View>
 
         </View>
