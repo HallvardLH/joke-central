@@ -45,17 +45,26 @@ export default function JokeFeedItem(props: JokeListItemProps) {
                 <View style={{
                     flexDirection: "row",
                     flexWrap: "wrap",
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
+                    gap: 10,
                 }}>
-                    <ProfileCard
-                        avatarSize={40}
-                        avatarURL={joke.profiles.avatar_url ? joke.profiles.avatar_url : undefined}
-                        username={joke.profiles.username}
-                        // username="Really long username, like why the hell is it this long?"
-                        createdAt={joke.created_at}
-                        uid={joke.profiles.id}
-                    />
-                    <JokeControls joke={joke} iconColor={gradientEnd} />
+                    <View style={{
+                        flexBasis: "55%",
+                    }}>
+                        <ProfileCard
+                            avatarSize={40}
+                            avatarURL={joke.profiles.avatar_url ? joke.profiles.avatar_url : undefined}
+                            username={joke.profiles.username}
+                            // username="Really long username, like why the hell is it this long?"
+                            createdAt={joke.created_at}
+                            uid={joke.profiles.id}
+                        />
+                    </View>
+                    <View style={{
+                        flexBasis: "35%",
+                    }}>
+                        <JokeControls joke={joke} iconColor={gradientEnd} />
+                    </View>
                 </View>
                 {userId === joke.author && (
                     <DeleteButton joke={joke} />

@@ -29,6 +29,11 @@ export default function SignUp() {
             return;
         }
 
+        if (username.length > 32) {
+            Alert.alert("Your username should not be longer than 32 characters.");
+            return;
+        }
+
         Keyboard.dismiss();
         await signUp(email, username, password, 'https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/default.png');
         router.navigate("/auth/selectAvatar");

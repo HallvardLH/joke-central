@@ -32,7 +32,7 @@ const formatCreatedAt = (createdAt: string | undefined) => {
 };
 
 export default function ProfileCard(props: ProfileCardProps) {
-    const { avatarSize, nameSize, avatarBackgroundColor, avatarURL, username, uid, createdAt, disableProfileTap } = props;
+    const { avatarSize, nameSize = 16, avatarBackgroundColor, avatarURL, username, uid, createdAt, disableProfileTap } = props;
     const theme = useTheme();
 
     const { session } = useAuth();
@@ -58,7 +58,7 @@ export default function ProfileCard(props: ProfileCardProps) {
         <TouchableOpacity style={styles.container} onPress={handleTapProfile}>
             <Avatar avatarURL={avatarURL} avatarBackgroundColor={avatarBackgroundColor} size={avatarSize} />
             <View style={styles.textContainer}>
-                <Text size={nameSize} shadow={false} color={"gray"}>{username}</Text>
+                <Text numberOfLines={2} size={nameSize} shadow={false} color={"gray"}>{username}</Text>
                 <Text shadow={false} color={"gray"} style={{ marginTop: -6 }} size={12} numberOfLines={1}>{formattedCreatedAt}</Text>
             </View>
         </TouchableOpacity>
