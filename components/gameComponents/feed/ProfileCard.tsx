@@ -45,6 +45,11 @@ export default function ProfileCard(props: ProfileCardProps) {
             router.navigate("/(tabs)/profile");
             return
         }
+        // You don't get to go to the official account's profile either, sorry
+        // Have to fix infinite joke loading bug first
+        if (uid === process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID) {
+            return
+        }
         if (!disableProfileTap) {
             dispatch(updateViewingProfileUid(uid));
             router.navigate("/profile/viewProfile");
@@ -58,7 +63,7 @@ export default function ProfileCard(props: ProfileCardProps) {
         <TouchableOpacity style={styles.container} onPress={handleTapProfile}>
             <Avatar avatarURL={avatarURL} avatarBackgroundColor={avatarBackgroundColor} size={avatarSize} />
             <View style={styles.textContainer}>
-                <Text numberOfLines={2} size={nameSize} shadow={false} color={"gray"}>{username}</Text>
+                <Text numberOfLines={2} size={nameSize} shadow={false} color={"gray"}>{username ? username : "Guest"}</Text>
                 <Text shadow={false} color={"gray"} style={{ marginTop: -6 }} size={12} numberOfLines={1}>{formattedCreatedAt}</Text>
             </View>
         </TouchableOpacity>

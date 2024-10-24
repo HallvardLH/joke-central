@@ -35,9 +35,13 @@ export default function JokeFeedItem(props: JokeListItemProps) {
                     minHeight: 200,
                 }}
             >
-
-                <Header title={joke.title} headerColor={headerColor} />
-                <ScrollView>
+                {joke.title && (
+                    <Header title={joke.title} headerColor={headerColor} />
+                )}
+                <ScrollView contentContainerStyle={{
+                    alignItems: "center",
+                    marginVertical: "auto"
+                }}>
                     <Text size={12} shadow={false} color="gray" style={styles.text}>
                         {joke.text}
                     </Text>

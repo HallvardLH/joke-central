@@ -67,8 +67,13 @@ export default function JokeFeed(props: JokeFeedProps) {
     useEffect(() => {
         if (!data) return;
         const temp_items: any[] = data.pages.flatMap(page => page.data ?? []);
-        setItems(temp_items);
+
+        // Use a Set to filter out duplicate jokes by ID
+        const uniqueItems = Array.from(new Map(temp_items.map(item => [item.id, item])).values());
+
+        setItems(uniqueItems);
     }, [data]);
+
 
     const refresh = async () => {
         await queryClient.resetQueries({ queryKey, exact: true });

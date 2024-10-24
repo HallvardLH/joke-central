@@ -72,6 +72,7 @@ export default function CreateCard() {
                         onChangeText={setJokeText}
                         placeholder="Write your joke..."
                         padding={10}
+                        lineHeight={16}
                         focusStyle={{ borderColor: theme.inputBorderFocus.val }}
                         borderWidth={theme.isLightMode.val === 1 ? 1.5 : 0}
                         borderColor={theme.inputBorder.val}

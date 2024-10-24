@@ -171,7 +171,7 @@ export default function useAuth() {
 			await addToProfiles(
 				null,
 				null, // No username for anonymous users initially
-				"default", // Default avatar
+				getAvatarUrl("default"), // Default avatar
 				user.id
 			);
 		}

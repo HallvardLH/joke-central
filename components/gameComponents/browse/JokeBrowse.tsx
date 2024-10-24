@@ -48,9 +48,12 @@ export default function JokeBrowse(props: JokeBrowseProps) {
 
     useEffect(() => {
         if (!data) return;
-
         const temp_items: any[] = data.pages.flatMap(page => page.data ?? []);
-        setItems(temp_items);
+
+        // Use a Set to filter out duplicate jokes by ID
+        const uniqueItems = Array.from(new Map(temp_items.map(item => [item.id, item])).values());
+
+        setItems(uniqueItems);
     }, [data]);
 
     const refresh = async () => {
@@ -108,9 +111,9 @@ export default function JokeBrowse(props: JokeBrowseProps) {
             refreshControl={<RefreshControl onRefresh={refresh} refreshing={isFetching} colors={['lightblue']} />}
             contentContainerStyle={styles.list}
             onEndReached={onEndReached}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.1}
             refreshing={isFetchingNextPage}
-            estimatedItemSize={100}
+            estimatedItemSize={200}
         />
     );
 }

@@ -51,11 +51,13 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                     />
                 </View>
                 <TouchableOpacity onPress={handleTapCard} style={styles.touchableContainer}>
-                    <View style={styles.titleContainer}>
-                        <Text shadow={false} color={gradientEnd} style={styles.titleText} size={15}>
-                            {joke.title}
-                        </Text>
-                    </View>
+                    {joke.title && (
+                        <View style={styles.titleContainer}>
+                            <Text shadow={false} color={gradientEnd} style={styles.titleText} size={15}>
+                                {joke.title}
+                            </Text>
+                        </View>
+                    )}
                     <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={13} numberOfLines={4}>
                         {joke.text}
                     </Text>

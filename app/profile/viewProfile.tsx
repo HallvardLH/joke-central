@@ -43,7 +43,7 @@ export default function ViewProfile() {
                     jokesAmount={999}
                 />
                 <JokeBrowse
-                    queryKey={userId + "_browse"}
+                    queryKey={userId + "_profile_jokes"}
                     queryFn={async (page: number) => {
                         return await supabase.from('jokes')
                             .select(`
