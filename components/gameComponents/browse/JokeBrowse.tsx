@@ -15,11 +15,13 @@ interface JokeBrowseProps {
     paddingTop?: boolean;
     queryKey: any;
     queryFn: any;
+    // Top offset of the refresh control indicator, defaults to 90
+    refreshOffset?: number;
 }
 
 export default function JokeBrowse(props: JokeBrowseProps) {
 
-    const { paddingTop, queryKey, queryFn } = props;
+    const { paddingTop, queryKey, queryFn, refreshOffset = 90 } = props;
 
     const queryClient = useQueryClient();
 
@@ -113,7 +115,7 @@ export default function JokeBrowse(props: JokeBrowseProps) {
                     onRefresh={refresh}
                     refreshing={isFetching}
                     colors={['lightblue']}
-                    progressViewOffset={90}
+                    progressViewOffset={refreshOffset}
                 />
             }
             contentContainerStyle={styles.list}

@@ -36,8 +36,8 @@ export default function ViewProfile() {
             <GradientBackground />
             <ScrollView style={{ width: "100%", flex: 1 }}>
                 <ProfileTop
-                    username={profile.username || 'Guest'} // Display fetched username or fallback
-                    avatarUrl={profile.avatar_url || 'https://default-avatar-url.com/default.png'} // Fallback avatar if null
+                    username={profile.username || 'Guest'}
+                    avatarUrl={profile.avatar_url || process.env.DEFAULT_AVATAR_URL!}
                     reads={2351}
                     likes={2223233}
                     jokesAmount={999}
@@ -54,6 +54,7 @@ export default function ViewProfile() {
                             .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1)
                             .order('created_at', { ascending: false });
                     }}
+                    refreshOffset={10}
                 />
             </ScrollView>
             <TabBar />

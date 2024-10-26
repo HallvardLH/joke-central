@@ -35,7 +35,7 @@ export default function SignUp() {
         }
 
         Keyboard.dismiss();
-        await signUp(email, username, password, 'https://eslrohuhvzvuxvueuziv.supabase.co/storage/v1/object/public/avatars/default.png');
+        await signUp(email, username, password, process.env.DEFAULT_AVATAR_URL!);
         router.navigate("/auth/selectAvatar");
     };
 

@@ -17,7 +17,7 @@ export default function Avatar(props: AvatarProps) {
     return (
         <View>
             <Image height={size} width={size} backgroundColor={avatarBackgroundColor} source={{
-                uri: avatarURL ? avatarURL : `https://oprhztiruewgtiajcdmo.supabase.co/storage/v1/object/public/avatars/default.png`,
+                uri: avatarURL ? avatarURL : process.env.DEFAULT_AVATAR_URL!,
             }} borderRadius={1000}></Image>
             {editable && (
                 <View backgroundColor={'$main2'} style={{

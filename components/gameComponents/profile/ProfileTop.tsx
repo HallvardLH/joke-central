@@ -2,7 +2,7 @@ import { useTheme, View } from "tamagui";
 import Avatar from "@/components/ui/generalUI/Avatar";
 import Text from "@/components/ui/generalUI/Text";
 import StatBox from "./StatBox";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { formatNumber as format } from "@/scripts/utils";
 import ProfileDrawer from "./ProfileDrawer";
 import { useRef } from "react";
@@ -18,6 +18,7 @@ interface ProfileTopProps {
     * @property Whether the edit button should be displayed on the avatar or not
     */
     showEdit?: boolean;
+    onAvatarPress?: () => void;
 }
 
 type DrawerRef = {
@@ -26,7 +27,7 @@ type DrawerRef = {
 };
 
 export default function ProfileTop(props: ProfileTopProps) {
-    const { username, avatarUrl, jokesAmount, likes, reads, showEdit } = props;
+    const { username, avatarUrl, jokesAmount, likes, reads, showEdit, onAvatarPress } = props;
     const drawerRef1 = useRef<DrawerRef>(null);
     const theme = useTheme();
 
@@ -35,7 +36,9 @@ export default function ProfileTop(props: ProfileTopProps) {
             <View style={styles.drawerButtonContainer}>
                 <ProfileDrawer ref={drawerRef1} />
             </View>
-            <Avatar avatarURL={avatarUrl} avatarBackgroundColor={theme.accentBlueLight.val} editable={showEdit} size={100} />
+            <Pressable onPress={onAvatarPress}>
+                <Avatar avatarURL={avatarUrl} avatarBackgroundColor={theme.accentBlueLight.val} editable={showEdit} size={100} />
+            </Pressable>
             <Text shadow={theme.enableShadow.val === 1} color={theme.background.val} size={22}>{username}</Text>
             <View style={styles.statsContainer}>
                 <StatBox label="Jokes" amount={format(jokesAmount)} />
