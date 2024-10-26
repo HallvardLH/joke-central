@@ -6,7 +6,7 @@ import ProfileCard from "../feed/ProfileCard";
 import { useTheme } from "tamagui";
 import { router } from "expo-router";
 import { useDispatch } from 'react-redux';
-import { updateViewingJoke } from "@/state/viewingJokeSlice";
+import { updateViewingJoke, updateGradientStart, updateGradientEnd } from "@/state/viewingJokeSlice";
 import { Joke } from "./Joke";
 import useAuth from "@/hooks/useAuth";
 import DeleteButton from "../feed/DeleteButton";
@@ -26,6 +26,8 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
     const handleTapCard = () => {
         router.navigate("/joke/readJoke");
         dispatch(updateViewingJoke(joke));
+        dispatch(updateGradientStart(gradientStart));
+        dispatch(updateGradientEnd(gradientEnd));
     }
 
     const theme = useTheme();
