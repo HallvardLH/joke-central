@@ -137,12 +137,20 @@ export default function JokeFeed(props: JokeFeedProps) {
             snapToInterval={height}
             decelerationRate="fast"
             snapToAlignment="start"
-            refreshControl={<RefreshControl onRefresh={refresh} refreshing={isFetching} colors={['lightblue']} />}
+            refreshControl={
+                <RefreshControl
+                    onRefresh={refresh}
+                    refreshing={isFetching}
+                    colors={['lightblue']}
+                    progressViewOffset={90}
+                />
+            }
             estimatedItemSize={height}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
             onViewableItemsChanged={onViewableItemsChanged}
             refreshing={isFetchingNextPage}
         />
+
     );
 }

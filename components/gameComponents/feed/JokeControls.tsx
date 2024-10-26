@@ -1,10 +1,9 @@
-import Avatar from "../../ui/generalUI/Avatar";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { View } from "tamagui";
-import { Heart, MessageSquareText, Eye } from "@tamagui/lucide-icons";
+import { Heart, Eye } from "@tamagui/lucide-icons";
 import Text from "../../ui/generalUI/Text";
 import { useTheme } from "tamagui";
-import { useLikes } from "@/hooks/useLikes";
+import { useSocial } from "@/hooks/useSocial";
 import { Joke } from "../browse/Joke";
 import { formatNumber } from "@/scripts/utils";
 
@@ -15,31 +14,32 @@ interface JokeControlsProps {
 
 export default function JokeControls(props: JokeControlsProps) {
     const { joke, iconColor } = props;
-    const { likes, liked, toggleLike } = useLikes(joke.id);
-    console.log(liked, joke.id)
+    const { likes, liked, toggleLike, reads } = useSocial(joke.id);
+
     return (
-        <View style={{
-            flexDirection: "row",
-            gap: 10,
-        }}>
-            <TouchableOpacity onPress={toggleLike} style={{
-                alignItems: "center",
-            }}>
+        <View style={styles.container}>
+            <TouchableOpacity onPress={toggleLike} style={styles.iconContainer}>
                 <Heart
                     color={iconColor}
                     fill={liked ? iconColor : "transparent"}
                 />
-                <Text color="gray" size={12}>{`${formatNumber(likes)} ${likes === 1 ? "like" : "likes"}`}</Text>
+                <Text color="gray" size={12}>{`${formatNumber(likes)} ${likes === 1 ? "Like" : "Likes"}`}</Text>
             </TouchableOpacity>
 
-            <View style={{
-                alignItems: "center",
-            }}>
-                <Eye
-                    color={iconColor}
-                />
-                <Text color="gray" size={12}>999k views</Text>
+            <View style={styles.iconContainer}>
+                <Eye color={iconColor} />
+                <Text color="gray" size={12}>{`${formatNumber(reads)} ${reads === 1 ? "Read" : "Reads"}`}</Text>
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        gap: 10,
+    },
+    iconContainer: {
+        alignItems: "center",
+    },
+});

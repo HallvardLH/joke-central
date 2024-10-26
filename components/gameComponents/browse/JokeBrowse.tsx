@@ -108,7 +108,14 @@ export default function JokeBrowse(props: JokeBrowseProps) {
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl onRefresh={refresh} refreshing={isFetching} colors={['lightblue']} />}
+            refreshControl={
+                <RefreshControl
+                    onRefresh={refresh}
+                    refreshing={isFetching}
+                    colors={['lightblue']}
+                    progressViewOffset={90}
+                />
+            }
             contentContainerStyle={styles.list}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.1}

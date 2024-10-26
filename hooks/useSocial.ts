@@ -2,16 +2,19 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/supabase';
 import useAuth from './useAuth';
 
-export const useLikes = (itemId: number) => {
+export const useSocial = (jokeId: number) => {
     const { getSession } = useAuth();
     const [likes, setLikes] = useState<number>(0);
     const [liked, setLiked] = useState<boolean>(false);
 
-    // Fetch likes on component mount or when itemId changes
+    const [reads, setReads] = useState<number>(0);
+
+    // Fetch likes on component mount or when jokeId changes
     useEffect(() => {
-        setLiked(false); // Reset liked state when itemId changes
+        // Reset liked state when jokeId changes
+        setLiked(false);
         const fetchLikes = async () => {
-            const result = await supabase.from('likes').select('*', { count: 'exact' }).eq('joke_id', itemId);
+            const result = await supabase.from('likes').select('*', { count: 'exact' }).eq('joke_id', jokeId);
             const session = await getSession();
 
             if (session && 'user' in session && session.user?.id) {
@@ -27,7 +30,18 @@ export const useLikes = (itemId: number) => {
         };
 
         fetchLikes();
-    }, [itemId]);
+    }, [jokeId]);
+
+    useEffect(() => {
+        const fetchReads = async () => {
+            const result = await supabase.from('joke_read_status').select('*', { count: 'exact' }).eq('joke_id', jokeId);
+
+            if (result?.count) setReads(result.count);
+            else setReads(0);
+        };
+
+        fetchReads();
+    }, [jokeId]);
 
 
     // Add like to the database
@@ -52,6 +66,7 @@ export const useLikes = (itemId: number) => {
         return { error: 'No user session' };
     };
 
+
     // Handle like/unlike action
     const toggleLike = async () => {
         if (!liked) {
@@ -59,7 +74,7 @@ export const useLikes = (itemId: number) => {
             setLiked(true);
             setLikes((prevLikes) => prevLikes + 1);
 
-            const result = await addLike(itemId);
+            const result = await addLike(jokeId);
             if (result.error != null) {
                 // Rollback if there was an error
                 setLikes((prevLikes) => prevLikes - 1);
@@ -70,7 +85,7 @@ export const useLikes = (itemId: number) => {
             setLiked(false);
             setLikes((prevLikes) => prevLikes - 1);
 
-            const result = await removeLike(itemId);
+            const result = await removeLike(jokeId);
             if (result.error != null) {
                 // Rollback if there was an error
                 setLikes((prevLikes) => prevLikes + 1);
@@ -79,6 +94,6 @@ export const useLikes = (itemId: number) => {
         }
     };
 
-    return { likes, liked, toggleLike };
+    return { likes, liked, toggleLike, reads };
 };
 
