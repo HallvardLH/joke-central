@@ -46,7 +46,8 @@ export default function OfficialFeed() {
                             profiles (username, avatar_url, id)
                         `)
                         .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
-                        .order('created_at', { ascending: false });
+                        .order('created_at', { ascending: false })
+                        .eq("author", process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID);
 
                     // Apply the .not() filter only if readJokeIds is not empty
                     if (readJokeIds.length > 0) {
@@ -69,7 +70,8 @@ export default function OfficialFeed() {
                                 profiles (username, avatar_url, id)
                             `)
                             .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
-                            .order('created_at', { ascending: false });
+                            .order('created_at', { ascending: false })
+                            .eq("author", process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID);
 
                         const { data: backupData, error: backupError } = await backupQuery;
 
