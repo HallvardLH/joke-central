@@ -12,13 +12,19 @@ import { supabase } from "@/supabase";
 import { BROWSE_PAGE_SIZE } from "@/constants/General";
 import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
+import { useStats } from '@/hooks/useStats';
 
 export default function Profile() {
     const { session } = useAuth();
     const userId = session?.user?.id;
 
-    const { profile, loading, error, refetchProfile } = useProfile(userId ? userId : null);
+    const { likes, reads, jokes } = useStats(userId!);
+
+    const { profile, loading, error, refetchProfile } = useProfile(userId!);
     const [avatarUrl, setAvatarUrl] = useState(process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
+
+    // Counter to trigger refetch
+    const [reloadCount, setReloadCount] = useState(0);
 
     // Use useFocusEffect to trigger reload when screen comes into focus
     useFocusEffect(
@@ -29,9 +35,6 @@ export default function Profile() {
             setAvatarUrl(profile.avatar_url || process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
         }, [profile.avatar_url])
     );
-
-    // Counter to trigger refetch
-    const [reloadCount, setReloadCount] = useState(0);
 
     if (loading) {
         return (
@@ -64,9 +67,9 @@ export default function Profile() {
                 <ProfileTop
                     username={profile.username || 'Guest'}
                     avatarUrl={avatarUrl}
-                    reads={2351}
-                    likes={2223233}
-                    jokesAmount={999}
+                    reads={reads}
+                    likes={likes}
+                    jokesAmount={jokes}
                     showEdit
                     onAvatarPress={handleEditAvatar}
                 />

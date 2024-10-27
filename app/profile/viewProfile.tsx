@@ -11,13 +11,14 @@ import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';
 import { supabase } from "@/supabase";
 import { BROWSE_PAGE_SIZE } from "@/constants/General";
+import { useStats } from '@/hooks/useStats';
 
 export default function ViewProfile() {
     const { uid } = useSelector((state: RootState) => state.viewingProfile);
 
     const userId = uid;
 
-    console.log(uid)
+    const { likes, reads, jokes } = useStats(userId!);
 
     const { profile, loading, error } = useProfile(userId ? userId : null)
 
@@ -29,8 +30,6 @@ export default function ViewProfile() {
         return <ScreenView><ScrollView><Text>{error}</Text></ScrollView></ScreenView>;
     }
 
-    console.log(userId)
-
     return (
         <View style={{ flex: 1, backgroundColor: "transparent", paddingTop: Platform.OS === "android" ? 25 : 40, }}>
             <GradientBackground />
@@ -38,24 +37,26 @@ export default function ViewProfile() {
                 <ProfileTop
                     username={profile.username || 'Guest'}
                     avatarUrl={profile.avatar_url || process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!}
-                    reads={2351}
-                    likes={2223233}
-                    jokesAmount={999}
+                    reads={reads}
+                    likes={likes}
+                    jokesAmount={jokes}
                 />
-                <JokeBrowse
-                    queryKey={userId + "_profile_jokes"}
-                    queryFn={async (page: number) => {
-                        return await supabase.from('jokes')
-                            .select(`
+                {userId !== process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID && (
+                    <JokeBrowse
+                        queryKey={userId + "_profile_jokes"}
+                        queryFn={async (page: number) => {
+                            return await supabase.from('jokes')
+                                .select(`
                             id, title, text, author, created_at, 
                             profiles (username, avatar_url, id)
                         `)
-                            .eq('author', userId)
-                            .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
-                            .order('created_at', { ascending: false });
-                    }}
-                    refreshOffset={10}
-                />
+                                .eq('author', userId)
+                                .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
+                                .order('created_at', { ascending: false });
+                        }}
+                        refreshOffset={10}
+                    />
+                )}
             </ScrollView>
             <TabBar />
         </View>

@@ -47,9 +47,9 @@ export default function ProfileCard(props: ProfileCardProps) {
         }
         // You don't get to go to the official account's profile either, sorry
         // Have to fix infinite joke loading bug first
-        if (uid === process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID) {
-            return
-        }
+        // if (uid === process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID) {
+        //     return
+        // }
         if (!disableProfileTap) {
             dispatch(updateViewingProfileUid(uid));
             router.navigate("/profile/viewProfile");
