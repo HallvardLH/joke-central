@@ -2,7 +2,7 @@ import { View } from "tamagui";
 import JokeFeed from "@/components/gameComponents/feed/JokeFeed";
 import { SafeAreaView, ActivityIndicator } from "react-native";
 import { supabase } from "@/supabase";
-import { PAGE_SIZE } from "@/constants/General";
+import { BROWSE_PAGE_SIZE } from "@/constants/General";
 import useAuth from "@/hooks/useAuth";
 import Text from "@/components/ui/generalUI/Text";
 
@@ -45,7 +45,7 @@ export default function OfficialFeed() {
                             id, title, text, author, created_at,
                             profiles (username, avatar_url, id)
                         `)
-                        .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1)
+                        .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
                         .order('created_at', { ascending: false });
 
                     // Apply the .not() filter only if readJokeIds is not empty
@@ -68,7 +68,7 @@ export default function OfficialFeed() {
                                 id, title, text, author, created_at,
                                 profiles (username, avatar_url, id)
                             `)
-                            .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1)
+                            .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
                             .order('created_at', { ascending: false });
 
                         const { data: backupData, error: backupError } = await backupQuery;

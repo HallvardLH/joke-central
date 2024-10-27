@@ -16,6 +16,8 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query';
 import { PortalProvider } from 'tamagui';
+import useAds from '@/hooks/useAds';
+import { BannerAd } from 'react-native-google-mobile-ads';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -23,6 +25,8 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
+    const { BannerAdID } = useAds();
+
     // Load the custom "Digitalt" font asynchronously using Expo's useFonts hook
     const [loaded] = useFonts({
         Digitalt: require('../assets/fonts/Digitalt.otf'), // Add your custom font here
@@ -85,6 +89,16 @@ export default function RootLayout() {
         onLayoutReady();
     }, []);
 
+    const { initializeAds } = useAds();
+
+    let mobileAdsInitialized = false;
+    useEffect(() => {
+        if (!mobileAdsInitialized) {
+            initializeAds();
+            mobileAdsInitialized = true;
+        }
+    }, []);
+
     // If fonts are not ready or session is still being checked, return null to prevent rendering
     if (!loaded || isCheckingSession) {
         return null;
@@ -106,6 +120,7 @@ export default function RootLayout() {
                                         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                                         <Stack.Screen name="+not-found" />
                                     </Stack>
+                                    <BannerAd unitId={BannerAdID} size='ANCHORED_ADAPTIVE_BANNER' />
                                 </GestureHandlerRootView>
                             </Theme>
                         </PortalProvider>

@@ -8,7 +8,7 @@ import {
     useInfiniteQuery,
     useQueryClient,
 } from '@tanstack/react-query';
-import { PAGE_SIZE } from '@/constants/General';
+import { BROWSE_PAGE_SIZE } from '@/constants/General';
 import { Joke } from './Joke';
 
 interface JokeBrowseProps {
@@ -41,7 +41,7 @@ export default function JokeBrowse(props: JokeBrowseProps) {
         initialPageParam: 0,
         queryFn: ({ pageParam = 0 }) => queryFn(pageParam),
         getNextPageParam: (lastPage, pages) => {
-            if (!lastPage || !lastPage.data || lastPage.data.length < PAGE_SIZE) {
+            if (!lastPage || !lastPage.data || lastPage.data.length < BROWSE_PAGE_SIZE) {
                 return undefined;
             }
             return pages.length;

@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.whimsicalworks.jokecentral"
     },
     "web": {
       "bundler": "metro",
@@ -27,10 +28,22 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-1354741235649835~2307627151",
+          "iosAppId": "ca-app-pub-1354741235649835~7216338903"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "70759fa4-a8ea-487c-b2b2-0ed3073d440b"
+      }
     }
   }
 }

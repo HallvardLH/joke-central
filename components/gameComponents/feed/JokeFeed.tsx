@@ -8,11 +8,13 @@ import {
     useInfiniteQuery,
     useQueryClient,
 } from '@tanstack/react-query';
-import { PAGE_SIZE } from '@/constants/General';
+import { FEED_PAGE_SIZE } from '@/constants/General';
 import { Joke } from '../browse/Joke';
 import useMarkJokeAsRead from '@/hooks/useMarkJokeAsRead';
 import useAuth from '@/hooks/useAuth';
 import { View } from 'tamagui';
+import { useInterstitialAd } from 'react-native-google-mobile-ads';
+import useAds from '@/hooks/useAds';
 
 const { height } = Dimensions.get('window');
 
@@ -43,6 +45,9 @@ export default function JokeFeed(props: JokeFeedProps) {
     const queryClient = useQueryClient();
     const [items, setItems] = useState<any[]>([]);
 
+    const { InterstitialAdID } = useAds();
+    const { isLoaded, isClosed, load, show } = useInterstitialAd(InterstitialAdID);
+
     const {
         isFetching,
         isError,
@@ -57,7 +62,7 @@ export default function JokeFeed(props: JokeFeedProps) {
         initialPageParam: 0,
         queryFn: ({ pageParam = 0 }) => queryFn(pageParam),
         getNextPageParam: (lastPage, pages) => {
-            if (!lastPage || !lastPage.data || lastPage.data.length < PAGE_SIZE) {
+            if (!lastPage || !lastPage.data || lastPage.data.length < FEED_PAGE_SIZE) {
                 return undefined;
             }
             return pages.length;
@@ -89,24 +94,40 @@ export default function JokeFeed(props: JokeFeedProps) {
     const { session } = useAuth();
     const userId = session?.user?.id;
 
-    // If userId is not available, don't call markJokeAsRead
-    if (!userId) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Loading user data...</Text>
-            </View>
-        );
-    }
+    const [jokesSeen, setJokesSeen] = useState<number[]>([]);
 
     // Triggers when a joke is in view,
+    // Counts the amount of jokes that have been viewed,
+    // Shows an interstitial for every 10 jokes
     // Marks the joke as read in database
     const onViewableItemsChanged = ({ viewableItems }: ViewableItemsChangedProps) => {
-        viewableItems.forEach((viewable) => {
-            if (viewable.isViewable && userId) {
-                markJokeAsRead({ jokeId: viewable.item.id, userId });
-            }
+        // Use a functional update in order to have access to the correct state
+        setJokesSeen((prevJokesSeen) => {
+            const updatedJokesSeen = [...prevJokesSeen];
+
+            viewableItems.forEach((viewable) => {
+                if (!updatedJokesSeen.includes(viewable.item.id)) {
+                    updatedJokesSeen.push(viewable.item.id);
+
+                    // Load the ad one joke before actually showing it
+                    if (updatedJokesSeen.length % 9 === 0 && updatedJokesSeen.length > 0) {
+                        load();
+                    }
+
+                    if (updatedJokesSeen.length % 10 === 0 && updatedJokesSeen.length > 0) {
+                        show();
+                    }
+                }
+                // Marks the joke as read in supabase
+                if (viewable.isViewable && userId) {
+                    markJokeAsRead({ jokeId: viewable.item.id, userId });
+                }
+            });
+
+            return updatedJokesSeen;
         });
     };
+
 
 
     const renderItem = ({ item, index }: {
@@ -128,7 +149,7 @@ export default function JokeFeed(props: JokeFeedProps) {
         return <Text>Error loading list: {error.message}</Text>;
     }
 
-    return (
+    return userId ? (
         <FlashList
             data={items}
             renderItem={renderItem}
@@ -151,6 +172,9 @@ export default function JokeFeed(props: JokeFeedProps) {
             onViewableItemsChanged={onViewableItemsChanged}
             refreshing={isFetchingNextPage}
         />
-
+    ) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Loading user data...</Text>
+        </View>
     );
 }

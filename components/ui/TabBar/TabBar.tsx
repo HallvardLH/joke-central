@@ -52,7 +52,9 @@ export default function TabBar({ height = 100, backgroundColor, navigation, stat
                     highlight={theme.accentBlueDark.val}
                 />
                 <TabButton
-                    onPress={() => router.replace("/(tabs)/browse")}
+                    onPress={() => {
+                        router.replace("/(tabs)/browse");
+                    }}
                     label="Browse"
                     labelColor={theme.background.val}
                     icon={<FileSearch2 size={26} color={theme.background.val} />}

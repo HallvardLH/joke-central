@@ -13,7 +13,7 @@ export default function SelectAvatar() {
     const userId = session?.user?.id;
 
     const { profile, loading, error } = useProfile(userId || null);
-    const [avatarUrl, setAvatarUrl] = useState(process.env.DEFAULT_AVATAR_URL!);
+    const [avatarUrl, setAvatarUrl] = useState(process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
 
     const theme = useTheme();
 

@@ -35,7 +35,7 @@ export default function SignUp() {
         }
 
         Keyboard.dismiss();
-        await signUp(email, username, password, process.env.DEFAULT_AVATAR_URL!);
+        await signUp(email, username, password, process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
         router.navigate("/auth/selectAvatar");
     };
 

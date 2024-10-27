@@ -9,7 +9,7 @@ import Text from '@/components/ui/generalUI/Text';
 import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';
 import { supabase } from "@/supabase";
-import { PAGE_SIZE } from "@/constants/General";
+import { BROWSE_PAGE_SIZE } from "@/constants/General";
 import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
 
@@ -18,7 +18,7 @@ export default function Profile() {
     const userId = session?.user?.id;
 
     const { profile, loading, error, refetchProfile } = useProfile(userId ? userId : null);
-    const [avatarUrl, setAvatarUrl] = useState(process.env.DEFAULT_AVATAR_URL!);
+    const [avatarUrl, setAvatarUrl] = useState(process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
 
     // Use useFocusEffect to trigger reload when screen comes into focus
     useFocusEffect(
@@ -26,7 +26,7 @@ export default function Profile() {
             refetchProfile();
             // Increment the reload counter when the screen comes into focus
             setReloadCount((prev) => prev + 1);
-            setAvatarUrl(profile.avatar_url || process.env.DEFAULT_AVATAR_URL!);
+            setAvatarUrl(profile.avatar_url || process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!);
         }, [profile.avatar_url])
     );
 
@@ -81,7 +81,7 @@ export default function Profile() {
                                 profiles (username, avatar_url, id)
                             `)
                             .eq('author', userId)
-                            .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1)
+                            .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
                             .order('created_at', { ascending: false });
 
                         if (error) {

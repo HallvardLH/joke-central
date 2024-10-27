@@ -10,7 +10,7 @@ import TabBar from '@/components/ui/TabBar/TabBar';
 import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';
 import { supabase } from "@/supabase";
-import { PAGE_SIZE } from "@/constants/General";
+import { BROWSE_PAGE_SIZE } from "@/constants/General";
 
 export default function ViewProfile() {
     const { uid } = useSelector((state: RootState) => state.viewingProfile);
@@ -37,7 +37,7 @@ export default function ViewProfile() {
             <ScrollView style={{ width: "100%", flex: 1 }}>
                 <ProfileTop
                     username={profile.username || 'Guest'}
-                    avatarUrl={profile.avatar_url || process.env.DEFAULT_AVATAR_URL!}
+                    avatarUrl={profile.avatar_url || process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!}
                     reads={2351}
                     likes={2223233}
                     jokesAmount={999}
@@ -51,7 +51,7 @@ export default function ViewProfile() {
                             profiles (username, avatar_url, id)
                         `)
                             .eq('author', userId)
-                            .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1)
+                            .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
                             .order('created_at', { ascending: false });
                     }}
                     refreshOffset={10}
