@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import useAuth from '@/hooks/useAuth';
 import SmallInputField from '@/components/ui/generalUI/SmallInputField';
 import ContentBox from '@/components/ui/generalUI/ContentBox';
@@ -12,8 +12,12 @@ export default function SignIn() {
     const [password, setPassword] = useState<string>('');
 
     const handleSignIn = async () => {
-        await signIn(email, password);
-        router.navigate("/(tabs)");
+        const { error } = await signIn(email, password);
+        if (error) {
+            Alert.alert("Sign In Failed", error.message);
+        } else {
+            router.navigate("/(tabs)");
+        }
     };
 
     return (

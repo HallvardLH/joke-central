@@ -47,6 +47,11 @@ export const useSocial = (jokeId: number) => {
     // Add like to the database
     const addLike = async (jokeId: number) => {
         const session = await getSession();
+        if (session) {
+            if ('error' in session) {
+                return { error: session.error };
+            }
+        }
         if (session && session.user?.id) {
             const { data, error } = await supabase.from('likes').insert([
                 { joke_id: jokeId, user_id: session.user.id },
@@ -59,6 +64,11 @@ export const useSocial = (jokeId: number) => {
     // Remove like from the database
     const removeLike = async (jokeId: number) => {
         const session = await getSession();
+        if (session) {
+            if ('error' in session) {
+                return { error: session.error };
+            }
+        }
         if (session && session.user?.id) {
             const { data, error } = await supabase.from('likes').delete().eq('joke_id', jokeId).eq('user_id', session.user.id);
             return { data, error };
