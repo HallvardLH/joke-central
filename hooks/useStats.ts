@@ -54,10 +54,22 @@ export const useStats = (userId: string) => {
 
         const fetchReads = async () => {
             try {
+                // Get the id of every joke written by the user
+                const userJokes = await supabase
+                    .from('jokes')
+                    .select('id')
+                    .eq('author', userId);
+
+                if (userJokes.error) throw userJokes.error;
+
+                // Create an array of the joke ids
+                const jokeIds = userJokes.data?.map(joke => joke.id) || [];
+
+                // Count ever read of a joke written by the user
                 const result = await supabase
                     .from('joke_read_status')
                     .select('*', { count: 'exact' })
-                    .eq('user_id', userId);
+                    .in('joke_id', jokeIds);
 
                 if (result.error) throw result.error;
 
@@ -66,7 +78,7 @@ export const useStats = (userId: string) => {
                 setError(err.message || 'Error fetching reads');
                 setReads(0);
             }
-        };
+        }
 
         const fetchData = async () => {
             setLoading(true);
