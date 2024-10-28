@@ -10,6 +10,7 @@ import { updateViewingJoke, updateGradientStart, updateGradientEnd } from "@/sta
 import { Joke } from "./Joke";
 import useAuth from "@/hooks/useAuth";
 import DeleteButton from "../feed/DeleteButton";
+import JokeControls from "../feed/JokeControls";
 
 interface JokeThumbnailProps {
     joke: Joke,
@@ -64,6 +65,9 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                         {joke.text}
                     </Text>
                 </TouchableOpacity>
+                <View style={styles.jokeControlsContainer}>
+                    <JokeControls iconSize={18} iconColor={gradientEnd} containerStyle={{ justifyContent: "center" }} joke={joke} />
+                </View>
                 {userId === joke.author && (
                     <DeleteButton joke={joke} />
                 )}
@@ -79,8 +83,8 @@ const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
     },
     thumbnailContainer: {
         width: screenWidth / 2 - 30,
-        minHeight: 200,
-        maxHeight: 200,
+        minHeight: 230,
+        maxHeight: 230,
         borderRadius: 20,
         overflow: "hidden",
         borderWidth: 2.5,
@@ -109,4 +113,8 @@ const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
     titleText: {
         textAlign: "center",
     },
+    jokeControlsContainer: {
+        backgroundColor: theme.background.val,
+        padding: 4,
+    }
 });
