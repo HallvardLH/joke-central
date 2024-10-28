@@ -1,10 +1,11 @@
 import Avatar from "@/components/ui/generalUI/Avatar";
-import { View, ScrollView, useTheme } from "tamagui";
+import { View, useTheme } from "tamagui";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { AVATAR_IDS } from "@/constants/General";
 import { Dispatch, SetStateAction } from "react";
 import Button from "@/components/ui/buttons/Button";
 import Text from "@/components/ui/generalUI/Text";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface AvatarSelectProps {
     avatarUrl: string,
@@ -26,7 +27,7 @@ export default function AvatarSelector({ avatarUrl, setAvatarUrl, hideBack, onBa
             backgroundColor: theme.background.val,
             padding: 14,
             borderRadius: 16,
-            maxHeight: height * 0.85
+            maxHeight: height * 0.8
         }}>
             <View style={{
                 borderRadius: 20,

@@ -2,7 +2,7 @@ import useAuth from '@/hooks/useAuth';
 import AvatarSelector from '@/components/gameComponents/SelectAvatar/AvatarSelector';
 import { useEffect, useState } from 'react';
 import { router } from "expo-router";
-import { View, Dimensions, Platform, SafeAreaView } from 'react-native';
+import { View, Dimensions, Platform, SafeAreaView, ScrollView } from 'react-native';
 import { useTheme } from 'tamagui';
 import Text from '@/components/ui/generalUI/Text';
 import { useProfile } from '@/hooks/useProfile';
@@ -54,13 +54,15 @@ export default function SelectAvatar() {
                 backgroundColor: theme.accentPurpleDark.val,
             }}
         >
-            <AvatarSelector
-                hideBack
-                setAvatarUrl={setAvatarUrl}
-                avatarUrl={avatarUrl}
-                onBack={() => router.replace("/auth/signup")}
-                onSave={handleSave}
-            />
+            <ScrollView>
+                <AvatarSelector
+                    hideBack
+                    setAvatarUrl={setAvatarUrl}
+                    avatarUrl={avatarUrl}
+                    onBack={() => router.replace("/auth/signup")}
+                    onSave={handleSave}
+                />
+            </ScrollView>
         </SafeAreaView>
     );
 }

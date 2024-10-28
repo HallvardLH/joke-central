@@ -20,14 +20,14 @@ export default function Avatar(props: AvatarProps) {
                 uri: avatarURL ? avatarURL : process.env.EXPO_PUBLIC_DEFAULT_AVATAR_URL!,
             }} borderRadius={1000}></Image>
             {editable && (
-                <View backgroundColor={'$main2'} style={{
+                <View backgroundColor={"$accentBlueMedium"} style={{
                     position: "absolute",
                     bottom: -6,
-                    right: -6,
+                    right: -4,
                     padding: 6,
                     borderRadius: 100,
                 }}>
-                    <SquarePen size={size / 3.5} style={{
+                    <SquarePen color={"$background"} size={size / 4.5} style={{
 
                     }} />
                 </View>

@@ -72,6 +72,7 @@ export default function Profile() {
                     jokesAmount={jokes}
                     showEdit
                     onAvatarPress={handleEditAvatar}
+                    showDrawer
                 />
                 <JokeBrowse
                     key={reloadCount} // Use reloadCount as the key to force re-render
