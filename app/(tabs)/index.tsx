@@ -1,5 +1,5 @@
-import OfficialFeed from '@/components/gameComponents/home/OfficialFeed';
-import CommunityFeed from '@/components/gameComponents/home/CommunityFeed';
+import OfficialFeed from '@/components/gameComponents/feed/OfficialFeed';
+import CommunityFeed from '@/components/gameComponents/feed/CommunityFeed';
 import ContentTab from '@/components/ui/layout/ContentTab';
 import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';

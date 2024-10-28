@@ -4,13 +4,13 @@ import GradientBackground from "@/components/ui/layout/GradientBackground";
 import { supabase } from "@/supabase";
 import { BROWSE_PAGE_SIZE } from "@/constants/General";
 
-export default function OfficialBrowse() {
+export default function CommunityBrowse() {
     return (
         <View style={{ flex: 1, }}>
             <GradientBackground />
             <JokeBrowse
                 paddingTop
-                queryKey={"official_browse"}
+                queryKey={"community_browse"}
                 queryFn={async (page: number) => {
                     return await supabase.from('jokes')
                         .select(`
@@ -18,7 +18,8 @@ export default function OfficialBrowse() {
                             profiles (username, avatar_url, id)
                         `)
                         .range(page * BROWSE_PAGE_SIZE, page * BROWSE_PAGE_SIZE + BROWSE_PAGE_SIZE - 1)
-                        .order('created_at', { ascending: false });
+                        .order('created_at', { ascending: false })
+                        .neq("author", process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID);
                 }}
 
             />
