@@ -65,6 +65,8 @@ export default function ContentTab(props: ContentTabProps) {
             width: "100%",
             position: "absolute",
             zIndex: 2,
+            maxWidth: 600,
+            alignSelf: "center",
 
         },
 

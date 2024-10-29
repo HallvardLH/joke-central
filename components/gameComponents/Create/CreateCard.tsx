@@ -6,7 +6,7 @@ import { usePublishJoke } from '@/hooks/usePublishJoke';
 import { supabase } from '@/supabase';
 import { Dimensions } from 'react-native';
 
-const { height } = Dimensions.get("screen");
+const { height, width } = Dimensions.get("screen");
 
 export default function CreateCard() {
     const theme = useTheme();
@@ -30,22 +30,23 @@ export default function CreateCard() {
             const result = await publishJoke(jokeTitle, jokeText, uid);
             if (result) {
                 setJokeText('');
+                setJokeTitle('');
             }
         } else {
-            alert('Please write a joke and make sure you are logged in.');
+            alert('Please write a joke before posting.');
         }
     };
 
     return (
-        <ScrollView keyboardDismissMode="on-drag">
-            <View style={{ gap: 10 }}>
+        <ScrollView contentContainerStyle={{ flex: 1 }} keyboardDismissMode="on-drag">
+            <View style={{ gap: 10, flex: 1 }}>
 
                 <View style={{
-                    marginHorizontal: 24,
+                    marginHorizontal: width * .05,
                     gap: 14,
                     backgroundColor: theme.background.val,
                     padding: 14,
-                    borderRadius: 16,
+                    borderRadius: 20,
                 }}>
                     <View style={{
                         borderRadius: 20,
@@ -85,7 +86,7 @@ export default function CreateCard() {
                         backgroundColor={theme.isLightMode.val === 1 ? theme.background.val : theme.background2.val}
                     />
                     <View style={{
-                        paddingHorizontal: 22,
+                        // paddingHorizontal: 22,
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}>
@@ -93,12 +94,14 @@ export default function CreateCard() {
                             variant="pink"
                             label="Delete"
                             onPress={() => setJokeText('')}
+                            width={125}
                         />
                         <Button
                             variant="blue"
                             label={loading ? 'Posting...' : 'Post joke'}
                             onPress={handlePublish}
                             disabled={loading}
+                            width={125}
                         />
 
                     </View>

@@ -33,15 +33,17 @@ export default function TabBar({ height = 100, backgroundColor, navigation, stat
     if (isKeyboardVisible) return null;
 
     return (
-        <SafeAreaView style={{ backgroundColor: theme.accentPurpleDarkest.val }}>
+        <SafeAreaView style={[
+            styles.container,
+            {
+                height: height,
+                backgroundColor: backgroundColor ? backgroundColor : theme.accentPurpleDarkest.val,
+                borderTopWidth: 2.5,
+                borderColor: theme.background.val,
+            }
+        ]}>
             <View style={[
-                styles.container,
-                {
-                    height: height,
-                    backgroundColor: backgroundColor ? backgroundColor : theme.accentPurpleDarkest.val,
-                    borderTopWidth: 2.5,
-                    borderColor: theme.background.val,
-                }
+                styles.containerInner,
             ]}>
                 <TabButton
                     onPress={() => router.replace("/(tabs)/")}
@@ -90,9 +92,19 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         width: "100%",
-        flexDirection: "row",
-        gap: 20,
         justifyContent: "center",
+        alignContent: "center",
         alignItems: "center",
+        flexDirection: "row",
+    },
+
+    containerInner: {
+        flexDirection: "row",
+        maxWidth: 600,
+        width: "100%",
+        gap: 20,
+        justifyContent: "space-evenly",
+        alignSelf: "center",
+        paddingHorizontal: 20,
     }
 });

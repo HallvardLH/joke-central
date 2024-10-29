@@ -88,6 +88,7 @@ export default function JokeBrowse(props: JokeBrowseProps) {
                 joke={item}
                 gradientStart={colors.start}
                 gradientEnd={colors.end}
+                index={index}
             />
         );
     };

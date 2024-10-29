@@ -55,13 +55,13 @@ const ProfileDrawer = forwardRef<DrawerRef>((_, ref) => {
                     flex: 1,
                 }}>
                     <Button
-                        width={width * 0.65}
+                        width={width * 0.65 <= 300 ? width * 0.65 : 300}
                         variant="pink"
                         label="Close drawer"
                         onPress={close}
                     />
-                    <Button width={width * 0.65} label="Log out" onPress={handleSignOut} />
-                    <Button variant="yellow" width={width * 0.65} label="Delete my account" onPress={() => {
+                    <Button width={width * 0.65 <= 300 ? width * 0.65 : 300} label="Log out" onPress={handleSignOut} />
+                    <Button variant="yellow" width={width * 0.65 <= 300 ? width * 0.65 : 300} label="Delete my account" onPress={() => {
                         router.navigate("/delete-account/deleteAccount");
                         close();
                     }} />

@@ -48,7 +48,7 @@ export default function AvatarSelector({ avatarUrl, setAvatarUrl, hideBack, onBa
                 flexWrap: "wrap",
                 gap: 10,
                 alignItems: "center",
-                justifyContent: "space-evenly",
+                justifyContent: "center",
                 paddingBottom: 10,
 
             }}>

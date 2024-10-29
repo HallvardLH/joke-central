@@ -31,8 +31,9 @@ export default function JokeFeedItem(props: JokeListItemProps) {
             <ContentBoxLight
                 style={{
                     maxHeight: height - 320,
-                    marginBottom: Platform.OS === "ios" ? 25 : null,
+                    marginBottom: Platform.OS === "ios" ? 100 : 75,
                     minHeight: 200,
+                    maxWidth: 600,
                 }}
             >
                 {joke.title && (
@@ -51,24 +52,16 @@ export default function JokeFeedItem(props: JokeListItemProps) {
                     flexWrap: "wrap",
                     justifyContent: "space-between",
                     gap: 10,
+                    paddingRight: "5%",
                 }}>
-                    <View style={{
-                        flexBasis: "55%",
-                    }}>
-                        <ProfileCard
-                            avatarSize={40}
-                            avatarURL={joke.profiles.avatar_url ? joke.profiles.avatar_url : undefined}
-                            username={joke.profiles.username}
-                            // username="Really long username, like why the hell is it this long?"
-                            createdAt={joke.created_at}
-                            uid={joke.profiles.id}
-                        />
-                    </View>
-                    <View style={{
-                        flexBasis: "35%",
-                    }}>
-                        <JokeControls joke={joke} iconColor={gradientEnd} />
-                    </View>
+                    <ProfileCard
+                        avatarSize={40}
+                        avatarURL={joke.profiles.avatar_url ? joke.profiles.avatar_url : undefined}
+                        username={joke.profiles.username}
+                        createdAt={joke.created_at}
+                        uid={joke.profiles.id}
+                    />
+                    <JokeControls joke={joke} iconColor={gradientEnd} />
                 </View>
                 {userId === joke.author && (
                     <DeleteButton joke={joke} />

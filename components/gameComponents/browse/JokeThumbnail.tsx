@@ -16,12 +16,13 @@ interface JokeThumbnailProps {
     joke: Joke,
     gradientStart: string,
     gradientEnd: string,
+    index: number,
 }
 
 const screenWidth = Dimensions.get("screen").width;
 
 export default function JokeThumbnail(props: JokeThumbnailProps) {
-    const { joke, gradientStart, gradientEnd } = props;
+    const { joke, gradientStart, gradientEnd, index } = props;
 
     const dispatch = useDispatch();
     const handleTapCard = () => {
@@ -38,8 +39,12 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
     const userId = session?.user?.id;
 
     return (
-        <View style={styles.container}>
-            <Shadow shadowHeight={6} borderRadius={20} height={200} width={screenWidth / 2 - 30} />
+        <View style={[styles.container, { alignItems: index % 2 === 0 ? "flex-end" : "flex-start" }]}>
+            <Shadow shadowHeight={6} borderRadius={20} height={200} width={
+                screenWidth / 2 - 30 <= 250 ?
+                    screenWidth / 2 - 30 :
+                    250
+            } />
             <View style={styles.thumbnailContainer}>
                 <GradientBackground start={gradientStart} end={gradientEnd} />
                 <View style={styles.profileCardContainer}>
@@ -56,7 +61,7 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                 <TouchableOpacity onPress={handleTapCard} style={styles.touchableContainer}>
                     {joke.title && (
                         <View style={styles.titleContainer}>
-                            <Text shadow={false} color={gradientEnd} style={styles.titleText} size={15}>
+                            <Text numberOfLines={2} shadow={false} color={gradientEnd} style={styles.titleText} size={15}>
                                 {joke.title}
                             </Text>
                         </View>
@@ -80,9 +85,12 @@ const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
     container: {
         marginHorizontal: 15,
         marginVertical: 15,
+        alignItems: "center",
+        width: screenWidth / 2 - 30,
     },
     thumbnailContainer: {
         width: screenWidth / 2 - 30,
+        maxWidth: 250,
         minHeight: 230,
         maxHeight: 230,
         borderRadius: 20,
@@ -106,7 +114,8 @@ const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
         borderRadius: 20,
         height: 22,
         justifyContent: "center",
-        alignItems: "center",
+        // alignItems: "center",
+        paddingHorizontal: 4,
         zIndex: 1,
         backgroundColor: theme.background.val,
     },
