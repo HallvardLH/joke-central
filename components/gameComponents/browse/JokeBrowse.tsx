@@ -60,6 +60,7 @@ export default function JokeBrowse(props: JokeBrowseProps) {
 
     const refresh = async () => {
         queryClient.resetQueries({ queryKey, exact: true });
+        refetch();
     };
 
     const onEndReached = () => {

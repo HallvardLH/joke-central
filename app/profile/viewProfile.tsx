@@ -43,7 +43,7 @@ export default function ViewProfile() {
                 />
                 {userId !== process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID && (
                     <JokeBrowse
-                        queryKey={userId + "_profile_jokes"}
+                        queryKey={userId + "_view_profile_jokes"}
                         queryFn={async (page: number) => {
                             return await supabase.from('jokes')
                                 .select(`

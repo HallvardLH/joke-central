@@ -16,23 +16,30 @@ export function usePublishJoke() {
 
             if (error) throw error;
 
-            setLoading(false);
-            return data;
+            return true;
         } catch (error: any) {
-            setLoading(false);
             setError(error.message);
+            return null;
+        } finally {
+            setLoading(false);
         }
     };
 
     const deleteJoke = async (id: number) => {
-        const { data, error } = await supabase
-            .from('jokes')
-            .delete()
-            .eq('id', id);
+        try {
+            const { data, error } = await supabase
+                .from('jokes')
+                .delete()
+                .eq('id', id);
 
-        if (error) throw error;
-    }
+            if (error) throw error;
+
+            return data;
+        } catch (error: any) {
+            setError(error.message);
+            return null;
+        }
+    };
 
     return { publishJoke, deleteJoke, loading, error };
 }
-

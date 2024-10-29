@@ -82,6 +82,7 @@ export default function JokeFeed(props: JokeFeedProps) {
 
     const refresh = async () => {
         await queryClient.resetQueries({ queryKey, exact: true });
+        refetch();
     };
 
     const onEndReached = () => {

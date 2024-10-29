@@ -43,13 +43,14 @@ export default function AvatarSelector({ avatarUrl, setAvatarUrl, hideBack, onBa
                 size={100}
                 avatarURL={avatarUrl}
             />
-            <ScrollView borderRadius={20} contentContainerStyle={{
+            <ScrollView contentContainerStyle={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 10,
                 alignItems: "center",
                 justifyContent: "center",
                 paddingBottom: 10,
+                borderRadius: 20,
 
             }}>
                 {AVATAR_IDS.map((id) => (

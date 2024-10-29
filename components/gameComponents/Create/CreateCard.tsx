@@ -5,6 +5,7 @@ import Button from '@/components/ui/buttons/Button';
 import { usePublishJoke } from '@/hooks/usePublishJoke';
 import { supabase } from '@/supabase';
 import { Dimensions } from 'react-native';
+import { router } from 'expo-router';
 
 const { height, width } = Dimensions.get("screen");
 
@@ -28,9 +29,11 @@ export default function CreateCard() {
 
         if (jokeText.trim() && uid) {
             const result = await publishJoke(jokeTitle, jokeText, uid);
+            console.log(result)
             if (result) {
                 setJokeText('');
                 setJokeTitle('');
+                router.navigate("/(tabs)/profile")
             }
         } else {
             alert('Please write a joke before posting.');
