@@ -99,7 +99,7 @@ export default function JokeFeed(props: JokeFeedProps) {
 
     // Triggers when a joke is in view,
     // Counts the amount of jokes that have been viewed,
-    // Shows an interstitial for every 20 jokes
+    // Shows an interstitial for every 15 jokes
     // Marks the joke as read in database
     const onViewableItemsChanged = ({ viewableItems }: ViewableItemsChangedProps) => {
         // Use a functional update in order to have access to the correct state
@@ -110,12 +110,12 @@ export default function JokeFeed(props: JokeFeedProps) {
                 if (!updatedJokesSeen.includes(viewable.item.id)) {
                     updatedJokesSeen.push(viewable.item.id);
 
-                    // Load the ad one joke before actually showing it
-                    if (updatedJokesSeen.length % 19 === 0 && updatedJokesSeen.length > 0) {
+                    // Load the ad before actually showing it
+                    if (updatedJokesSeen.length % 10 === 0 && updatedJokesSeen.length > 0) {
                         load();
                     }
 
-                    if (updatedJokesSeen.length % 20 === 0 && updatedJokesSeen.length > 0) {
+                    if (updatedJokesSeen.length % 15 === 0 && updatedJokesSeen.length > 0) {
                         show();
                     }
                 }

@@ -29,9 +29,9 @@ export default function JokeFeedItem(props: JokeListItemProps) {
         <View style={styles.item}>
             <GradientBackground start={gradientStart} end={gradientEnd} />
             <ContentBoxLight
-                style={{
+                style={{ marginBottom: Platform.OS === "ios" ? 100 : 75 }}
+                innerStyle={{
                     maxHeight: height - 320,
-                    marginBottom: Platform.OS === "ios" ? 100 : 75,
                     minHeight: 200,
                     maxWidth: 600,
                 }}

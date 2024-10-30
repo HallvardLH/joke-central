@@ -7,6 +7,7 @@ interface ContentBoxLightProps {
     children?: ReactNode;
     title?: string;
     style?: StyleProp<ViewStyle>;
+    innerStyle?: StyleProp<ViewStyle>;
     headerColor?: string;
     width?: DimensionValue;
     height?: DimensionValue;
@@ -18,23 +19,28 @@ export default function ContentBoxLight(props: ContentBoxLightProps) {
         children,
         title,
         style,
+        innerStyle,
         headerColor = theme.accentPurpleDarkest.val,
         width = "88%",
     } = props;
 
-    const styles = createMainStyles(theme, width, headerColor);
+    const styles = createMainStyles(theme, width);
 
     return (
-        <View style={[styles.container, style]}>
-            {title && (
-                <Header title={title} headerColor={headerColor} />
-            )}
-            {children}
+        <View style={[styles.outerContainer, style]} >
+            <View style={styles.shadow} />
+            <View style={[styles.container, innerStyle]}>
+                {title && (
+                    <Header title={title} headerColor={headerColor} />
+                )}
+                {children}
+
+            </View>
         </View>
     );
 }
 
-const createMainStyles = (theme: any, width: DimensionValue, headerColor: string) => StyleSheet.create({
+const createMainStyles = (theme: any, width: DimensionValue) => StyleSheet.create({
     container: {
         marginHorizontal: 24,
         gap: 14,
@@ -44,7 +50,24 @@ const createMainStyles = (theme: any, width: DimensionValue, headerColor: string
         borderRadius: 16,
         width: width,
         minHeight: 125,
+        marginBottom: 20,
     },
+
+    outerContainer: {
+        width: "100%",
+        alignItems: "center",
+        height: "auto",
+    },
+
+    shadow: {
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        width: width,
+        bottom: 14,
+        height: 20,
+        backgroundColor: "rgba(0,0,0, 0.2)",
+        position: "absolute",
+    }
 });
 
 interface HeaderProps {

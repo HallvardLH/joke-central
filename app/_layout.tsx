@@ -7,7 +7,7 @@ import { TamaguiProvider, Theme } from '@tamagui/core';
 import { Appearance, StatusBar } from 'react-native';
 import config from '../tamagui.config';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import useAuth from '@/hooks/useAuth'; // Import the useAuth hook
+import useAuth from '@/hooks/useAuth';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/state/reduxStore';
@@ -19,7 +19,6 @@ import { PortalProvider } from 'tamagui';
 import useAds from '@/hooks/useAds';
 import { BannerAd } from 'react-native-google-mobile-ads';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
@@ -27,61 +26,42 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
     const { BannerAdID } = useAds();
 
-    // Load the custom "Digitalt" font asynchronously using Expo's useFonts hook
     const [loaded] = useFonts({
-        Digitalt: require('../assets/fonts/Digitalt.otf'), // Add your custom font here
+        Digitalt: require('../assets/fonts/Digitalt.otf'),
     });
 
-    // Manage system theme state (light/dark mode)
     const [currentTheme, setCurrentTheme] = useState<"light" | "dark">(Appearance.getColorScheme() || "light");
-    // Force the theme to be "light" for testing
-    // const currentTheme = "light";
-
-    // Import the useAuth hook and call anonymous sign-in
     const { session, getSession } = useAuth();
     const [isCheckingSession, setIsCheckingSession] = useState(true);
-
-    // Use the Expo Router's navigation function to redirect to the signup screen if needed
     const router = useRouter();
-
-    // Triggered when the layout is fully mounted
     const [isAppReady, setIsAppReady] = useState(false);
 
-    // Check for a session and only redirect once the app is fully mounted
     useEffect(() => {
         async function initializeAuth() {
             const currentSession = await getSession();
             if (!currentSession && isAppReady) {
-                // Redirect to the signup screen
                 router.replace('/auth/welcome');
             }
-            setIsCheckingSession(false); // We're done checking the session
+            setIsCheckingSession(false);
         }
         initializeAuth();
     }, [getSession, router, isAppReady]);
 
-    // Hide splash screen when fonts are loaded and session checking is done
+    // Trigger hiding the splash screen only when everything is ready
     useEffect(() => {
         if (loaded && !isCheckingSession && isAppReady) {
             SplashScreen.hideAsync();
         }
     }, [loaded, isCheckingSession, isAppReady]);
 
-    // Listen for changes in the system theme
     useEffect(() => {
         const listener = Appearance.addChangeListener(({ colorScheme }) => {
             setCurrentTheme(colorScheme || "light");
         });
-
-        // Clean up the listener when the component is unmounted
-        return () => {
-            listener.remove();
-        };
+        return () => listener.remove();
     }, []);
 
-    // Check if the app is ready
     useEffect(() => {
-        // Wait for layout to be mounted
         const onLayoutReady = async () => {
             await SplashScreen.preventAutoHideAsync();
             setIsAppReady(true);
@@ -90,7 +70,6 @@ export default function RootLayout() {
     }, []);
 
     const { initializeAds } = useAds();
-
     let mobileAdsInitialized = false;
     useEffect(() => {
         if (!mobileAdsInitialized) {
@@ -99,10 +78,8 @@ export default function RootLayout() {
         }
     }, []);
 
-    // If fonts are not ready or session is still being checked, return null to prevent rendering
     if (!loaded || isCheckingSession) {
         return null;
-        // TODO: add a splash screen or loading indicator here
     }
 
     return (
@@ -114,9 +91,7 @@ export default function RootLayout() {
                             <Theme name={currentTheme}>
                                 <GestureHandlerRootView>
                                     <StatusBar translucent backgroundColor="transparent" />
-                                    <Stack screenOptions={{
-                                        headerShown: false,
-                                    }}>
+                                    <Stack screenOptions={{ headerShown: false }}>
                                         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                                         <Stack.Screen name="+not-found" />
                                     </Stack>
