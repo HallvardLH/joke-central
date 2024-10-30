@@ -39,7 +39,12 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
     const userId = session?.user?.id;
 
     return (
-        <View style={[styles.container, { alignItems: index % 2 === 0 ? "flex-end" : "flex-start" }]}>
+        <View style={[
+            styles.container,
+            {
+                alignItems: index % 2 === 0 ? "flex-end" : "flex-start",
+            }
+        ]}>
             <Shadow shadowHeight={6} borderRadius={20} height={200} width={
                 screenWidth / 2 - 30 <= 250 ?
                     screenWidth / 2 - 30 :

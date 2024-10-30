@@ -67,6 +67,7 @@ const createMainStyles = (theme: any, width: DimensionValue) => StyleSheet.creat
         height: 20,
         backgroundColor: "rgba(0,0,0, 0.2)",
         position: "absolute",
+        maxWidth: 600,
     }
 });
 
