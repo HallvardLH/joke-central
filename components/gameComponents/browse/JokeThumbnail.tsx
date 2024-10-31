@@ -1,4 +1,4 @@
-import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Dimensions, TouchableOpacity, Platform } from "react-native";
 import GradientBackground from "../../ui/layout/GradientBackground";
 import Text from "../../ui/generalUI/Text";
 import Shadow from "../../ui/misc/Shadow";
@@ -11,6 +11,8 @@ import { Joke } from "./Joke";
 import useAuth from "@/hooks/useAuth";
 import DeleteButton from "../feed/DeleteButton";
 import JokeControls from "../feed/JokeControls";
+import { InterstitialAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
+import { useEffect } from "react";
 
 interface JokeThumbnailProps {
     joke: Joke,
@@ -21,22 +23,47 @@ interface JokeThumbnailProps {
 
 const screenWidth = Dimensions.get("screen").width;
 
+const interstitialId = process.env.EXPO_PUBLIC_DEVELOPMENT_MODE == 'true'
+    ? TestIds.INTERSTITIAL
+    : Platform.OS === 'android'
+        ? 'ca-app-pub-1354741235649835/2054364065'
+        : 'ca-app-pub-1354741235649835/5500425105';
+
+const adUnitId = interstitialId;
+const interstitial = InterstitialAd.createForAdRequest(adUnitId);
+
 export default function JokeThumbnail(props: JokeThumbnailProps) {
     const { joke, gradientStart, gradientEnd, index } = props;
-
     const dispatch = useDispatch();
+    const theme = useTheme();
+    const styles = createStyles(screenWidth, theme);
+    const { session } = useAuth();
+    const userId = session?.user?.id;
+
+    // Load ad when component mounts
+    useEffect(() => {
+        const loadAd = () => interstitial.load();
+
+        const onAdClosed = interstitial.addAdEventListener(AdEventType.CLOSED, loadAd);
+        loadAd();
+
+        return () => {
+            onAdClosed();
+        };
+    }, []);
+
     const handleTapCard = () => {
+        // 50% chance to show interstitial ad
+        if (Math.random() < 0.5 && interstitial.loaded) {
+            interstitial.show();
+        }
+
+        // Navigate to the joke read page and update Redux state
         router.navigate("/joke/readJoke");
         dispatch(updateViewingJoke(joke));
         dispatch(updateGradientStart(gradientStart));
         dispatch(updateGradientEnd(gradientEnd));
-    }
-
-    const theme = useTheme();
-    const styles = createStyles(screenWidth, theme);
-
-    const { session } = useAuth();
-    const userId = session?.user?.id;
+    };
 
     return (
         <View style={[
@@ -46,9 +73,7 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
             }
         ]}>
             <Shadow shadowHeight={6} borderRadius={20} height={200} width={
-                screenWidth / 2 - 30 <= 250 ?
-                    screenWidth / 2 - 30 :
-                    250
+                screenWidth / 2 - 30 <= 250 ? screenWidth / 2 - 30 : 250
             } />
             <View style={styles.thumbnailContainer}>
                 <GradientBackground start={gradientStart} end={gradientEnd} />
@@ -119,7 +144,6 @@ const createStyles = (screenWidth: number, theme: any) => StyleSheet.create({
         borderRadius: 20,
         height: 22,
         justifyContent: "center",
-        // alignItems: "center",
         paddingHorizontal: 4,
         zIndex: 1,
         backgroundColor: theme.background.val,

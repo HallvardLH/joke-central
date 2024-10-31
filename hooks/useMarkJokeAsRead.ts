@@ -36,7 +36,7 @@ export default function useMarkJokeAsRead() {
 
             if (existingRecord) {
                 // If record exists, no need to insert again
-                console.log('Joke already marked as read');
+                // console.log('Joke already marked as read');
                 setIsLoading(false);
                 return;
             }
@@ -53,7 +53,7 @@ export default function useMarkJokeAsRead() {
                 throw new Error(error.message);
             }
 
-            console.log('Joke marked as read successfully');
+            // console.log('Joke marked as read successfully');
         } catch (err: any) {
             console.log('Error marking joke as read:', err);
             setError(err.message);

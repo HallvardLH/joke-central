@@ -6,15 +6,15 @@ export default function useAds() {
         process.env.EXPO_PUBLIC_DEVELOPMENT_MODE == 'true'
             ? TestIds.BANNER
             : Platform.OS === 'android'
-                ? 'ca-app-pub-1354741235649835/8443760287'
-                : 'ca-app-pub-1354741235649835/9248757255';
+                ? 'ca-app-pub-1354741235649835/2405286655'
+                : 'ca-app-pub-1354741235649835/2948212135';
 
     const InterstitialAdID =
         process.env.EXPO_PUBLIC_DEVELOPMENT_MODE == 'true'
             ? TestIds.INTERSTITIAL
             : Platform.OS === 'android'
-                ? 'ca-app-pub-1354741235649835/1561838922'
-                : 'ca-app-pub-1354741235649835/8252188596';
+                ? 'ca-app-pub-1354741235649835/2054364065'
+                : 'ca-app-pub-1354741235649835/5500425105';
 
     const initializeAds = async () => {
         await mobileAds()
