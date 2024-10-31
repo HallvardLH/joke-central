@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactNode } from 'react';
 import { Modal as RNModal, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import CircularButton from '../buttons/CircularButton';
+import { X } from "@tamagui/lucide-icons";
 
 interface ModalProps {
     children?: ReactNode;
@@ -31,7 +32,7 @@ export default function Modal(props: ModalProps) {
                     </TouchableWithoutFeedback>
                     {!noExit && (
                         <View style={styles.closeButton}>
-                            <CircularButton size={36} variant="purple" onPress={onRequestClose} />
+                            <CircularButton iconComponent={<X color="white" />} size={36} variant="purple" onPress={onRequestClose} />
                         </View>
                     )}
                 </View>

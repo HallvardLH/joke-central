@@ -26,10 +26,10 @@ export default function deleteAccount() {
             >
                 <Text>Delete account</Text>
                 <Text>To delete your account, send a mail to:</Text>
-                <Text style={{ textDecorationLine: "underline" }}>contact@funlibs.app</Text>
+                <Text style={{ textDecorationLine: "underline" }}>contact.joke.central@gmail.com</Text>
                 <Text>The mail needs to contain your username.</Text>
                 <Text>
-                    Your account and all your published libs will be deleted within a day. After deletion, the account cannot be recovered.</Text>
+                    Your account and all your published jokes will be deleted within a day. After deletion, the account cannot be recovered.</Text>
                 <Text>You can send a mail manually, or press the button to have a mail automatically filled in for you.</Text>
                 <Button
                     label="Go to mail and fill in automatically"

@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 export default function Signup() {
     return (
 
-        <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? 80 : 0, }}>
+        <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === "android" ? 120 : 0, }}>
             <GradientBackground />
             <SignIn />
         </SafeAreaView>

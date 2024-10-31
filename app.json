@@ -2,7 +2,7 @@
   "expo": {
     "name": "joke-central",
     "slug": "joke-central",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -13,7 +13,8 @@
       "backgroundColor": "#6F53FD"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.whimsicalworks.jokecentral"
     },
     "android": {
       "adaptiveIcon": {
