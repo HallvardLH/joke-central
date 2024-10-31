@@ -19,6 +19,7 @@ interface ProfileTopProps {
     */
     showEdit?: boolean;
     onAvatarPress?: () => void;
+    showDrawer?: boolean;
 }
 
 type DrawerRef = {
@@ -27,15 +28,17 @@ type DrawerRef = {
 };
 
 export default function ProfileTop(props: ProfileTopProps) {
-    const { username, avatarUrl, jokesAmount, likes, reads, showEdit, onAvatarPress } = props;
+    const { username, avatarUrl, jokesAmount, likes, reads, showEdit, onAvatarPress, showDrawer } = props;
     const drawerRef1 = useRef<DrawerRef>(null);
     const theme = useTheme();
 
     return (
         <View style={styles.container}>
-            <View style={styles.drawerButtonContainer}>
-                <ProfileDrawer ref={drawerRef1} />
-            </View>
+            {showDrawer && (
+                <View style={styles.drawerButtonContainer}>
+                    <ProfileDrawer ref={drawerRef1} />
+                </View>
+            )}
             <Pressable onPress={onAvatarPress}>
                 <Avatar avatarURL={avatarUrl} avatarBackgroundColor={theme.accentBlueLight.val} editable={showEdit} size={100} />
             </Pressable>

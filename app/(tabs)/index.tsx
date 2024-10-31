@@ -1,13 +1,11 @@
-import OfficialFeed from '../home/OfficialFeed';
-import ContentBox from '@/components/ui/generalUI/ContentBox';
+import OfficialFeed from '@/components/gameComponents/feed/OfficialFeed';
+import CommunityFeed from '@/components/gameComponents/feed/CommunityFeed';
 import ContentTab from '@/components/ui/layout/ContentTab';
-import ScreenView from '@/components/ui/layout/ScreenView';
 import { View } from 'tamagui';
 import GradientBackground from '@/components/ui/layout/GradientBackground';
 
 export default function Home() {
     return (
-        // <ScreenView scrollView={false}>
         <View style={{ flex: 1, backgroundColor: "transparent" }}>
             <GradientBackground />
             <ContentTab
@@ -19,11 +17,10 @@ export default function Home() {
                     },
                     {
                         name: "Community",
-                        component: <ContentBox />,
+                        component: <CommunityFeed />,
                     }
                 ]}
             />
         </View>
-        // </ScreenView>
     )
 }
