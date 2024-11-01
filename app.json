@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Joke Central",
-    "slug": "JokeCentral",
+    "slug": "joke-central",
     "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
