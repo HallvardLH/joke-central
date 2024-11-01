@@ -15,6 +15,10 @@ import useAuth from '@/hooks/useAuth';
 import { View } from 'tamagui';
 import { InterstitialAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
 import useAds from '@/hooks/useAds';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchSettings } from '@/state/settingsSlice';
+import { RootState } from '@/state/reduxStore';
+
 
 const { height } = Dimensions.get('window');
 
@@ -124,6 +128,14 @@ export default function JokeFeed(props: JokeFeedProps) {
         }
     };
 
+    const dispatch = useDispatch();
+    const { interstitialAdFeedFrequency, loading } = useSelector((state: RootState) => state.settings);
+
+    useEffect(() => {
+        dispatch(fetchSettings());
+    }, [dispatch]);
+
+
     // Handles displaying interstitial ad and marking jokes as read
     const onViewableItemsChanged = ({ viewableItems }: ViewableItemsChangedProps) => {
         setJokesSeen((prevJokesSeen) => {
@@ -138,8 +150,9 @@ export default function JokeFeed(props: JokeFeedProps) {
                         interstitial.load();
                     }
 
-                    // Show ad every 15 jokes
-                    if (updatedJokesSeen.length % 15 === 0 && interstitial.loaded) {
+                    // Show ad every x jokes
+                    console.log(interstitialAdFeedFrequency)
+                    if (updatedJokesSeen.length % interstitialAdFeedFrequency === 0 && interstitial.loaded) {
                         interstitial.show();
                     }
 

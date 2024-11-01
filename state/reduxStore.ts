@@ -5,11 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import viewingProfileSlice from './viewingProfileSlice';
 import signUpSlice from './signUpSlice';
 import viewingJokeSlice from './viewingJokeSlice';
+import settingsSlice from './settingsSlice';
 
 const rootReducer = combineReducers({
     viewingProfile: viewingProfileSlice,
     signUp: signUpSlice,
     viewingJoke: viewingJokeSlice,
+    settings: settingsSlice,
 });
 
 const persistConfig = {

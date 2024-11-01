@@ -40,7 +40,7 @@ export default function JokeFeedItem(props: JokeListItemProps) {
                     <Header title={joke.title} headerColor={headerColor} />
                 )}
                 <ScrollView contentContainerStyle={{
-                    alignItems: "center",
+                    // alignItems: "center",
                     marginVertical: "auto"
                 }}>
                     <Text size={12} shadow={false} color="gray" style={styles.text}>
