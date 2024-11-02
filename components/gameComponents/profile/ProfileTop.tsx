@@ -33,7 +33,7 @@ export default function ProfileTop(props: ProfileTopProps) {
     const theme = useTheme();
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: "rgba(0,0,0, 0.2)" }]}>
             {showDrawer && (
                 <View style={styles.drawerButtonContainer}>
                     <ProfileDrawer ref={drawerRef1} />
@@ -57,7 +57,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: 6,
         padding: 30,
+        paddingBottom: 10,
         width: "100%",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
 
     statsContainer: {

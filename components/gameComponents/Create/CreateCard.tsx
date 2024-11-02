@@ -29,7 +29,6 @@ export default function CreateCard() {
 
         if (jokeText.trim() && uid) {
             const result = await publishJoke(jokeTitle, jokeText, uid);
-            console.log(result)
             if (result) {
                 setJokeText('');
                 setJokeTitle('');

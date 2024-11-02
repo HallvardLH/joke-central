@@ -6,12 +6,14 @@ import viewingProfileSlice from './viewingProfileSlice';
 import signUpSlice from './signUpSlice';
 import viewingJokeSlice from './viewingJokeSlice';
 import settingsSlice from './settingsSlice';
+import profileTabSlice from './profileTabSlice';
 
 const rootReducer = combineReducers({
     viewingProfile: viewingProfileSlice,
     signUp: signUpSlice,
     viewingJoke: viewingJokeSlice,
     settings: settingsSlice,
+    profileTab: profileTabSlice,
 });
 
 const persistConfig = {

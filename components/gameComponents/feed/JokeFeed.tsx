@@ -151,7 +151,6 @@ export default function JokeFeed(props: JokeFeedProps) {
                     }
 
                     // Show ad every x jokes
-                    console.log(interstitialAdFeedFrequency)
                     if (updatedJokesSeen.length % interstitialAdFeedFrequency === 0 && interstitial.loaded) {
                         interstitial.show();
                     }

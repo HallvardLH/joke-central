@@ -76,7 +76,8 @@ export default function JokeThumbnail(props: JokeThumbnailProps) {
                 screenWidth / 2 - 30 <= 250 ? screenWidth / 2 - 30 : 250
             } />
             <View style={styles.thumbnailContainer}>
-                <GradientBackground start={gradientStart} end={gradientEnd} />
+                {/* Looks better with no gradient */}
+                <GradientBackground start={gradientEnd} end={gradientEnd} />
                 <View style={styles.profileCardContainer}>
                     <ProfileCard
                         createdAt={joke.created_at}
