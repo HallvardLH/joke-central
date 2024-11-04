@@ -18,6 +18,8 @@ import { RootState } from '@/state/reduxStore';
 import { updateProfileTab } from '@/state/profileTabSlice';
 import { GalleryVertical, Heart } from '@tamagui/lucide-icons';
 import { useTheme } from 'tamagui';
+import Button from '@/components/ui/buttons/Button';
+import FullScreenLoader from '@/components/ui/misc/FullScreenLoader';
 
 export default function Profile() {
     const { tab } = useSelector((state: RootState) => state.profileTab);
@@ -28,6 +30,12 @@ export default function Profile() {
     const { likes, reads, jokes, refetch: refetchStats } = useStats(userId!);
     const dispatch = useDispatch();
 
+    const { signOut } = useAuth();
+
+    const handleSignOut = () => {
+        signOut();
+    }
+
     useFocusEffect(
         useCallback(() => {
             refetchProfile();
@@ -36,11 +44,16 @@ export default function Profile() {
     );
 
     if (loading) {
-        return <ScreenView><ScrollView><Text>Loading...</Text></ScrollView></ScreenView>;
+        return <FullScreenLoader />;
     }
 
     if (error) {
-        return <ScreenView><ScrollView><Text>{error}</Text></ScrollView></ScreenView>;
+        return (
+            <ScreenView>
+                <Text>{error}</Text>
+                <Button onPress={handleSignOut} label='Log out' />
+            </ScreenView>
+        );
     }
 
     const handleEditAvatar = () => {
