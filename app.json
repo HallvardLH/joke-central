@@ -2,11 +2,12 @@
   "expo": {
     "name": "Joke Central",
     "slug": "joke-central",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "infoPlist": "Tracking used to deliver personalized ads.",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -31,6 +32,10 @@
     "plugins": [
       "expo-router",
       [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        },
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-1354741235649835~7364171118",

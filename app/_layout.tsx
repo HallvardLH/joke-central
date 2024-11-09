@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PortalProvider } from 'tamagui';
 import useAds from '@/hooks/useAds';
 import { BannerAd, BannerAdSize, useForeground, AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,10 +33,27 @@ export default function RootLayout() {
     const [isCheckingSession, setIsCheckingSession] = useState(true);
     const [isAppReady, setIsAppReady] = useState(false);
     const [hasConsent, setHasConsent] = useState(false);
-    const [forceRender, setForceRender] = useState(false); // force re-render state
+    const [forceRender, setForceRender] = useState(false);
     const router = useRouter();
     const bannerRef = useRef<BannerAd>(null);
     const adsInitialized = useRef(false);
+
+    const requestTracking = async () => {
+        try {
+            const { status } = await requestTrackingPermissionsAsync();
+            if (status === 'granted') {
+                console.log('User permission to track data granted');
+            } else {
+                console.log('User did not grant tracking permission');
+            }
+        } catch (error) {
+            console.error('Error requesting tracking permission:', error);
+        }
+    };
+
+    useEffect(() => {
+        requestTracking();
+    }, []);
 
     const requestConsent = async () => {
         try {
@@ -44,10 +62,10 @@ export default function RootLayout() {
                 await AdsConsent.showForm();
             }
             setHasConsent(consentInfo.status === AdsConsentStatus.OBTAINED);
-            setForceRender(prev => !prev); // Trigger re-render
+            setForceRender(prev => !prev);
         } catch (error) {
-            console.warn("Failed to update ads consent info:", error);
-            setForceRender(prev => !prev); // Trigger re-render even if error
+            console.warn('Failed to update ads consent info:', error);
+            setForceRender(prev => !prev);
         }
     };
 
@@ -74,7 +92,7 @@ export default function RootLayout() {
 
     useEffect(() => {
         const listener = Appearance.addChangeListener(({ colorScheme }) => {
-            setCurrentTheme(colorScheme || "light");
+            setCurrentTheme(colorScheme || 'light');
         });
         return () => listener.remove();
     }, []);
@@ -94,7 +112,6 @@ export default function RootLayout() {
         }
     }, [hasConsent, initializeAds]);
 
-    // Load a new ad on foreground (iOS workaround for suspended state issue)
     useForeground(() => {
         if (Platform.OS === 'ios' && hasConsent) {
             bannerRef.current?.load();
