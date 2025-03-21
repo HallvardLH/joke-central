@@ -21,7 +21,6 @@ export default function OfficialBrowse() {
                         .order('created_at', { ascending: false })
                         .eq("author", process.env.EXPO_PUBLIC_JOKE_CENTRAL_ACCOUNT_UUID);
                 }}
-
             />
         </View>
     )

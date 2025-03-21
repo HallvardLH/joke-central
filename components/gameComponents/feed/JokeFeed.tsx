@@ -1,6 +1,6 @@
 import JokeFeedItem from './JokeFeedItem';
 import React, { useState, useEffect } from 'react';
-import { RefreshControl, Dimensions, Platform } from 'react-native';
+import { RefreshControl, Dimensions } from 'react-native';
 import Text from '../../ui/generalUI/Text';
 import { useTheme } from 'tamagui';
 import { FlashList } from '@shopify/flash-list';
@@ -13,11 +13,6 @@ import { Joke } from '../browse/Joke';
 import useMarkJokeAsRead from '@/hooks/useMarkJokeAsRead';
 import useAuth from '@/hooks/useAuth';
 import { View } from 'tamagui';
-import { InterstitialAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
-import useAds from '@/hooks/useAds';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchSettings } from '@/state/settingsSlice';
-import { RootState } from '@/state/reduxStore';
 
 
 const { height } = Dimensions.get('window');
@@ -34,18 +29,6 @@ interface ViewableItem {
 interface ViewableItemsChangedProps {
     viewableItems: ViewableItem[];
 }
-
-const interstitialId = process.env.EXPO_PUBLIC_DEVELOPMENT_MODE == 'true'
-    ? TestIds.INTERSTITIAL
-    : Platform.OS === 'android'
-        ? 'ca-app-pub-1354741235649835/2054364065'
-        : 'ca-app-pub-1354741235649835/5500425105';
-
-// Set up the interstitial ad
-const adUnitId = interstitialId;
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-    keywords: ['fashion', 'clothing'],
-});
 
 export default function JokeFeed(props: JokeFeedProps) {
     const { queryKey, queryFn } = props;
@@ -93,30 +76,6 @@ export default function JokeFeed(props: JokeFeedProps) {
         setItems(uniqueItems);
     }, [data]);
 
-    // Load and prepare interstitial ad
-    useEffect(() => {
-        const loadInterstitial = () => {
-            interstitial.load();
-        };
-
-        // Listen for ad events
-        const onAdLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-            console.log('Ad Loaded');
-        });
-
-        const onAdClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-            loadInterstitial();
-        });
-
-        loadInterstitial();
-
-        // Cleanup listeners on component unmount
-        return () => {
-            onAdLoaded();
-            onAdClosed();
-        };
-    }, []);
-
     const refresh = async () => {
         await queryClient.resetQueries({ queryKey, exact: true });
         refetch();
@@ -128,15 +87,7 @@ export default function JokeFeed(props: JokeFeedProps) {
         }
     };
 
-    const dispatch = useDispatch();
-    const { interstitialAdFeedFrequency, loading } = useSelector((state: RootState) => state.settings);
-
-    useEffect(() => {
-        dispatch(fetchSettings());
-    }, [dispatch]);
-
-
-    // Handles displaying interstitial ad and marking jokes as read
+    // Handles marking jokes as read
     const onViewableItemsChanged = ({ viewableItems }: ViewableItemsChangedProps) => {
         setJokesSeen((prevJokesSeen) => {
             const updatedJokesSeen = [...prevJokesSeen];
@@ -144,16 +95,6 @@ export default function JokeFeed(props: JokeFeedProps) {
             viewableItems.forEach((viewable) => {
                 if (!updatedJokesSeen.includes(viewable.item.id)) {
                     updatedJokesSeen.push(viewable.item.id);
-
-                    // Load ad after every 10 jokes
-                    if (updatedJokesSeen.length % 10 === 0) {
-                        interstitial.load();
-                    }
-
-                    // Show ad every x jokes
-                    if (updatedJokesSeen.length % interstitialAdFeedFrequency === 0 && interstitial.loaded) {
-                        interstitial.show();
-                    }
 
                     // Mark joke as read if viewable and userId exists
                     if (viewable.isViewable && userId) {
