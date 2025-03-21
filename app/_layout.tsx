@@ -1,16 +1,15 @@
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { TamaguiProvider, Theme } from '@tamagui/core';
-import { Appearance, StatusBar, Platform } from 'react-native';
+import { Appearance, StatusBar } from 'react-native';
 import config from '../tamagui.config';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import useAuth from '@/hooks/useAuth';
 import { Provider as ReduxProvider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from '@/state/reduxStore';
+import store from '@/state/reduxStore';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PortalProvider } from 'tamagui';
 
@@ -27,8 +26,6 @@ export default function RootLayout() {
     const { session, getSession } = useAuth();
     const [isCheckingSession, setIsCheckingSession] = useState(true);
     const [isAppReady, setIsAppReady] = useState(false);
-    const [hasConsent, setHasConsent] = useState(false);
-    const [forceRender, setForceRender] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -43,10 +40,10 @@ export default function RootLayout() {
     }, [getSession, router, isAppReady]);
 
     useEffect(() => {
-        if (loaded && !isCheckingSession && isAppReady && hasConsent) {
+        if (loaded && !isCheckingSession && isAppReady) {
             SplashScreen.hideAsync();
         }
-    }, [loaded, isCheckingSession, isAppReady, hasConsent]);
+    }, [loaded, isCheckingSession, isAppReady]);
 
     useEffect(() => {
         const listener = Appearance.addChangeListener(({ colorScheme }) => {
@@ -70,21 +67,19 @@ export default function RootLayout() {
     return (
         <QueryClientProvider client={queryClient}>
             <ReduxProvider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <TamaguiProvider config={config}>
-                        <PortalProvider>
-                            <Theme name={currentTheme}>
-                                <GestureHandlerRootView>
-                                    <StatusBar translucent backgroundColor="transparent" />
-                                    <Stack screenOptions={{ headerShown: false }}>
-                                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                                        <Stack.Screen name="+not-found" />
-                                    </Stack>
-                                </GestureHandlerRootView>
-                            </Theme>
-                        </PortalProvider>
-                    </TamaguiProvider>
-                </PersistGate>
+                <TamaguiProvider config={config}>
+                    <PortalProvider>
+                        <Theme name={currentTheme}>
+                            <GestureHandlerRootView>
+                                <StatusBar translucent backgroundColor="transparent" />
+                                <Stack screenOptions={{ headerShown: false }}>
+                                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                                    <Stack.Screen name="+not-found" />
+                                </Stack>
+                            </GestureHandlerRootView>
+                        </Theme>
+                    </PortalProvider>
+                </TamaguiProvider>
             </ReduxProvider>
         </QueryClientProvider>
     );

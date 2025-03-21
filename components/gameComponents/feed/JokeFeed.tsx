@@ -14,7 +14,6 @@ import useMarkJokeAsRead from '@/hooks/useMarkJokeAsRead';
 import useAuth from '@/hooks/useAuth';
 import { View } from 'tamagui';
 
-
 const { height } = Dimensions.get('window');
 
 interface JokeFeedProps {

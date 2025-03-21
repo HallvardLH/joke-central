@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "infoPlist": "Tracking used to deliver personalized ads.",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
